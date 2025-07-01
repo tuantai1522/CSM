@@ -3,7 +3,7 @@ using CSM.Core.Features.Channels;
 
 namespace CSM.Core.Features.Users;
 
-public sealed class User : IAuditableEntity
+public sealed class User : IAuditableEntity, IAggregateRoot
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
     
@@ -13,6 +13,12 @@ public sealed class User : IAuditableEntity
     
     public string? MiddleName { get; private set; }
     public string? LastName { get; private set; }
+
+    /// <summary>
+    /// Information for login
+    /// </summary>
+    public string Email { get; private set; } = null!;
+    public string HashPassword { get; private set; } = null!;
 
     /// <summary>
     /// Type of gender
@@ -46,7 +52,7 @@ public sealed class User : IAuditableEntity
         
     }
     
-    public static User CreateUser(string nickName, string firstName, string? middleName, string? lastName, 
+    public static User CreateUser(string nickName, string firstName, string? middleName, string? lastName, string email, string hashPassword,
         GenderType genderType, Guid countryId, string timeZone, string locale)
     {
         return new User
@@ -55,6 +61,8 @@ public sealed class User : IAuditableEntity
             FirstName = firstName,
             MiddleName = middleName,
             LastName = lastName,
+            Email = email,
+            HashPassword = hashPassword,
             GenderType = genderType,
             CountryId = countryId,
             TimeZone = timeZone,

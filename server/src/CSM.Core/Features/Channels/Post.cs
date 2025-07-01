@@ -1,4 +1,4 @@
-namespace CSM.Core.Features.Posts;
+namespace CSM.Core.Features.Channels;
 
 public class Post
 {

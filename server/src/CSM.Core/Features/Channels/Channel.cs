@@ -3,7 +3,7 @@ using CSM.Core.Features.Users;
 
 namespace CSM.Core.Features.Channels;
 
-public class Channel : Entity, IAuditableEntity
+public class Channel : Entity, IAuditableEntity, IAggregateRoot
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
 
@@ -48,6 +48,13 @@ public class Channel : Entity, IAuditableEntity
     private readonly HashSet<ChannelMember> _channelMembers = [];
     
     public IReadOnlyList<ChannelMember> ChannelMembers => _channelMembers.ToList();
+    
+    /// <summary>
+    /// List posts of this channel.
+    /// </summary>
+    private readonly HashSet<Post> _posts = [];
+    
+    public IReadOnlyList<Post> Posts => _posts.ToList();
 
     private Channel()
     {
@@ -83,6 +90,15 @@ public class Channel : Entity, IAuditableEntity
         // Assign total post count to this channel member
         var channelMember = ChannelMember.CreateChannelMember(Id, userId, isOwner, TotalPostCount);
         _channelMembers.Add(channelMember);
+    }
+
+    /// <summary>
+    /// Create post int channel
+    /// </summary>
+    public void CreatePost(Guid userId, Guid? rootId, string message, PostType type = PostType.Normal)
+    {
+        var post = Post.CreatePost(Id, userId, rootId, message, type);
+        _posts.Add(post);
     }
 
 }
