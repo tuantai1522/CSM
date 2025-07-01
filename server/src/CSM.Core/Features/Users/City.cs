@@ -1,0 +1,24 @@
+namespace CSM.Core.Features.Users;
+
+public sealed class City
+{
+    public Guid Id { get; init; } = Guid.CreateVersion7();
+    
+    public string Name { get; private set; } = null!;
+    
+    public Guid CountryId { get; private set; }
+
+    private City()
+    {
+        
+    }
+
+    public static City CreateCity(string name, Guid countryId)
+    {
+        return new City
+        {
+            Name = name,
+            CountryId = countryId
+        };
+    }
+}
