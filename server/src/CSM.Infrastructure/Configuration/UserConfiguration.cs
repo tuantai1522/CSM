@@ -1,0 +1,39 @@
+using CSM.Core.Features.Users;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace CSM.Infrastructure.Configuration;
+
+public class UserConfiguration : IEntityTypeConfiguration<User>
+{
+    public void Configure(EntityTypeBuilder<User> builder)
+    {
+        builder.Property(p => p.NickName).HasMaxLength(128);
+        builder.Property(p => p.FirstName).HasMaxLength(64);
+        builder.Property(p => p.MiddleName).HasMaxLength(64);
+        builder.Property(p => p.LastName).HasMaxLength(64);
+        
+        builder.Property(p => p.Email).HasMaxLength(64);
+        builder.Property(p => p.HashPassword).HasMaxLength(256);
+
+        // GenderType is an enum (to store string in database)
+        builder.Property(p => p.GenderType)
+            .HasConversion(
+                v => v.ToString(),
+                v => Enum.Parse<GenderType>(v));
+        
+        // One channel is created by only one user
+        builder.HasOne<Country>()
+            .WithMany()
+            .HasForeignKey(u => u.CountryId);
+        
+        builder.Property(p => p.TimeZone).HasMaxLength(64);
+        builder.Property(p => p.Locale).HasMaxLength(64);
+        
+        // One user belongs to multiple channels
+        builder.HasMany(r => r.ChannelMembers)
+            .WithOne()
+            .HasForeignKey(p => p.UserId);
+
+    }
+}

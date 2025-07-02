@@ -11,7 +11,7 @@ public class Post
     /// ID of root post if this was sent in thread
     /// </summary>
     public Guid? RootId { get; private set; }
-
+    
     /// <summary>
     /// Message of post to send
     /// </summary>

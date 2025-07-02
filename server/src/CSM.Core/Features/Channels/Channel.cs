@@ -33,8 +33,7 @@ public class Channel : Entity, IAuditableEntity, IAggregateRoot
     /// A person who created this channel.
     /// </summary>
     public Guid CreatorId { get; private set; }
-
-    public User User { get; private set; } = null!;
+    public User Creator { get; private set; } = null!;
 
     public long CreatedAt { get; private set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
