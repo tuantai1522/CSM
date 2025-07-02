@@ -1,5 +1,4 @@
 using System.Text;
-using CSM.Application.Abstractions.Authentication;
 using CSM.Infrastructure.Authentication;
 using CSM.Infrastructure.Database;
 using CSM.UseCases.Abstractions.Authentication;

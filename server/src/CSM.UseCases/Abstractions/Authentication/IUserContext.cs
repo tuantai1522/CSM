@@ -1,4 +1,4 @@
-namespace CSM.Application.Abstractions.Authentication;
+namespace CSM.UseCases.Abstractions.Authentication;
 
 /// <summary>
 /// To get UserId from jwt token.

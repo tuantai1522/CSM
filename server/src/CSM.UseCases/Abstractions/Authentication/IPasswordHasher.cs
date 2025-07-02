@@ -1,4 +1,4 @@
-namespace CSM.Application.Abstractions.Authentication;
+namespace CSM.UseCases.Abstractions.Authentication;
 
 /// <summary>
 /// To define service to hash and verify password from user input.

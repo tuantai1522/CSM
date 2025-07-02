@@ -1,4 +1,4 @@
-using CSM.Application.Abstractions.Authentication;
+using CSM.UseCases.Abstractions.Authentication;
 using Microsoft.AspNetCore.Http;
 
 namespace CSM.Infrastructure.Authentication;

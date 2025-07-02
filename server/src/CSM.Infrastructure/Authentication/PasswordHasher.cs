@@ -1,5 +1,5 @@
 using System.Security.Cryptography;
-using CSM.Application.Abstractions.Authentication;
+using CSM.UseCases.Abstractions.Authentication;
 
 namespace CSM.Infrastructure.Authentication;
 
