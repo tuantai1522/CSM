@@ -4,13 +4,12 @@ namespace CSM.Web;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddWeb(this IServiceCollection services)
+    public static void AddWeb(this IServiceCollection services)
     {
-        services.AddControllers();
-
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+        
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
-
-        return services;
     }
 }
