@@ -8,6 +8,9 @@ public record Error(string Code, string Description, ErrorType Type)
         "Null value was provided",
         ErrorType.Failure);
 
+    public static Error Validation(string code, string description) =>
+        new(code, description, ErrorType.Validation);
+    
     public static Error Failure(string code, string description) =>
         new(code, description, ErrorType.Failure);
 

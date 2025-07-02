@@ -17,7 +17,8 @@ public static class DependencyInjection
         this IServiceCollection services, IConfiguration configuration) =>
         services
             .AddDatabase(configuration)
-            .AddAuthenticationInternal(configuration);
+            .AddAuthenticationInternal(configuration)
+            .AddAuthorizationInternal();
     
     private static IServiceCollection AddAuthenticationInternal(
         this IServiceCollection services,
@@ -43,6 +44,14 @@ public static class DependencyInjection
         services.AddScoped<IUserContext, UserContext>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ITokenProvider, TokenProvider>();
+
+        return services;
+    }
+    
+    private static IServiceCollection AddAuthorizationInternal(
+        this IServiceCollection services)
+    {
+        services.AddAuthorization();
 
         return services;
     }

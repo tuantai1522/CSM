@@ -9,8 +9,6 @@ public class ValidationPipelineBehaviour<TRequest, TResponse>(IEnumerable<IValid
     where TRequest : IRequest<TResponse>
     where TResponse : Result
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
-
     /// <summary>
     /// 1. Validate request
     /// 2. If there is any errors, return validation result
@@ -20,29 +18,48 @@ public class ValidationPipelineBehaviour<TRequest, TResponse>(IEnumerable<IValid
     /// <param name="next"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        if (!_validators.Any())
+        if (!validators.Any())
         {
             return await next(cancellationToken);
         }
 
-        var validationResults = await Task.WhenAll(_validators
+        var validationResults = await Task.WhenAll(validators
             .Select(validator => validator.ValidateAsync(request, cancellationToken)));
 
-        var failures  = validationResults
+        var failures = validationResults
+            .Where(validationResult => !validationResult.IsValid)
             .SelectMany(validationResult => validationResult.Errors)
-            .Where(validationResult => validationResult is not null)
             .ToArray();
         
         if (failures.Length > 0)
         {
             var error = new ValidationError(failures
-                .Select(f => Error.Problem(f.ErrorCode, f.ErrorMessage))
+                .Select(f => Error.Validation(f.ErrorCode, f.ErrorMessage))
                 .ToArray());
 
-            return (TResponse)Result.Failure(error);
+            if (typeof(TResponse).IsGenericType && typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))
+            {
+                var resultType = typeof(TResponse).GetGenericArguments()[0];
+
+                var failureMethod = typeof(Result<>)
+                    .MakeGenericType(resultType)
+                    .GetMethod(nameof(Result<object>.ValidationFailure));
+
+                if (failureMethod is not null)
+                {
+                    return (TResponse)failureMethod.Invoke(null, [error])!;
+                }
+            }
+            else if (typeof(TResponse) == typeof(Result))
+            {
+                return (TResponse)Result.Failure(error);
+            }
+            else
+            {
+                throw new ValidationException(failures);
+            }
         }
 
         return await next(cancellationToken);
