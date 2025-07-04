@@ -1,6 +1,8 @@
 using System.Text;
+using CSM.Core.Features.Users;
 using CSM.Infrastructure.Authentication;
 using CSM.Infrastructure.Database;
+using CSM.Infrastructure.Repositories;
 using CSM.UseCases.Abstractions.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,7 @@ public static class DependencyInjection
         this IServiceCollection services, IConfiguration configuration) =>
         services
             .AddDatabase(configuration)
+            .AddRepositories()
             .AddAuthenticationInternal(configuration)
             .AddAuthorizationInternal();
     
@@ -41,7 +44,7 @@ public static class DependencyInjection
         });
 
         services.AddHttpContextAccessor();
-        services.AddScoped<IUserContext, UserContext>();
+        services.AddScoped<IUserProvider, UserProvider>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ITokenProvider, TokenProvider>();
 
@@ -65,6 +68,14 @@ public static class DependencyInjection
                 .UseNpgsql(connectionString, npgsqlOptions =>
                     npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default))
                 .UseSnakeCaseNamingConvention());
+
+        return services;
+    }
+    
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services
+            .AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

@@ -190,12 +190,12 @@ namespace CSM.Infrastructure.Migrations
                         .HasColumnName("name");
 
                     b.HasKey("Id")
-                        .HasName("pk_city");
+                        .HasName("pk_cities");
 
                     b.HasIndex("CountryId")
-                        .HasDatabaseName("ix_city_country_id");
+                        .HasDatabaseName("ix_cities_country_id");
 
-                    b.ToTable("city", "csm");
+                    b.ToTable("cities", "csm");
                 });
 
             modelBuilder.Entity("CSM.Core.Features.Users.Country", b =>
@@ -211,9 +211,9 @@ namespace CSM.Infrastructure.Migrations
                         .HasColumnName("name");
 
                     b.HasKey("Id")
-                        .HasName("pk_country");
+                        .HasName("pk_countries");
 
-                    b.ToTable("country", "csm");
+                    b.ToTable("countries", "csm");
                 });
 
             modelBuilder.Entity("CSM.Core.Features.Users.User", b =>
@@ -223,9 +223,9 @@ namespace CSM.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("CountryId")
+                    b.Property<Guid>("CityId")
                         .HasColumnType("uuid")
-                        .HasColumnName("country_id");
+                        .HasColumnName("city_id");
 
                     b.Property<long>("CreatedAt")
                         .HasColumnType("bigint")
@@ -293,8 +293,8 @@ namespace CSM.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_users");
 
-                    b.HasIndex("CountryId")
-                        .HasDatabaseName("ix_users_country_id");
+                    b.HasIndex("CityId")
+                        .HasDatabaseName("ix_users_city_id");
 
                     b.ToTable("users", "csm");
                 });
@@ -357,17 +357,17 @@ namespace CSM.Infrastructure.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_city_country_country_id");
+                        .HasConstraintName("fk_cities_countries_country_id");
                 });
 
             modelBuilder.Entity("CSM.Core.Features.Users.User", b =>
                 {
-                    b.HasOne("CSM.Core.Features.Users.Country", null)
+                    b.HasOne("CSM.Core.Features.Users.City", null)
                         .WithMany()
-                        .HasForeignKey("CountryId")
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_users_country_country_id");
+                        .HasConstraintName("fk_users_cities_city_id");
                 });
 
             modelBuilder.Entity("CSM.Core.Features.Channels.Channel", b =>

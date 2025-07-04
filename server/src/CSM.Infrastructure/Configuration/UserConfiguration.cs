@@ -22,10 +22,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 v => v.ToString(),
                 v => Enum.Parse<GenderType>(v));
         
-        // One channel is created by only one user
-        builder.HasOne<Country>()
+        // One user belongs to one city
+        builder.HasOne<City>()
             .WithMany()
-            .HasForeignKey(u => u.CountryId);
+            .HasForeignKey(u => u.CityId);
         
         builder.Property(p => p.TimeZone).HasMaxLength(64);
         builder.Property(p => p.Locale).HasMaxLength(64);

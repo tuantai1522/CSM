@@ -26,9 +26,9 @@ public sealed class User : IAuditableEntity, IAggregateRoot
     public GenderType GenderType { get; private set; } = GenderType.M;
     
     /// <summary>
-    /// ID of country
+    /// ID of city
     /// </summary>
-    public Guid CountryId { get; private set; }
+    public Guid CityId { get; private set; }
 
     /// <summary>
     /// Information from header
@@ -53,7 +53,7 @@ public sealed class User : IAuditableEntity, IAggregateRoot
     }
     
     public static User CreateUser(string nickName, string firstName, string? middleName, string? lastName, string email, string hashPassword,
-        GenderType genderType, Guid countryId, string timeZone, string locale)
+        GenderType genderType, Guid cityId, string timeZone, string locale)
     {
         return new User
         {
@@ -64,7 +64,7 @@ public sealed class User : IAuditableEntity, IAggregateRoot
             Email = email,
             HashPassword = hashPassword,
             GenderType = genderType,
-            CountryId = countryId,
+            CityId = cityId,
             TimeZone = timeZone,
             Locale = locale,
         };

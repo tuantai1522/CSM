@@ -15,7 +15,7 @@ namespace CSM.Infrastructure.Migrations
                 name: "csm");
 
             migrationBuilder.CreateTable(
-                name: "country",
+                name: "countries",
                 schema: "csm",
                 columns: table => new
                 {
@@ -24,11 +24,11 @@ namespace CSM.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_country", x => x.id);
+                    table.PrimaryKey("pk_countries", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "city",
+                name: "cities",
                 schema: "csm",
                 columns: table => new
                 {
@@ -38,12 +38,12 @@ namespace CSM.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_city", x => x.id);
+                    table.PrimaryKey("pk_cities", x => x.id);
                     table.ForeignKey(
-                        name: "fk_city_country_country_id",
+                        name: "fk_cities_countries_country_id",
                         column: x => x.country_id,
                         principalSchema: "csm",
-                        principalTable: "country",
+                        principalTable: "countries",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -61,7 +61,7 @@ namespace CSM.Infrastructure.Migrations
                     email = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     hash_password = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     gender_type = table.Column<string>(type: "text", nullable: false),
-                    country_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    city_id = table.Column<Guid>(type: "uuid", nullable: false),
                     time_zone = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     locale = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     created_at = table.Column<long>(type: "bigint", nullable: false),
@@ -72,10 +72,10 @@ namespace CSM.Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_users", x => x.id);
                     table.ForeignKey(
-                        name: "fk_users_country_country_id",
-                        column: x => x.country_id,
+                        name: "fk_users_cities_city_id",
+                        column: x => x.city_id,
                         principalSchema: "csm",
-                        principalTable: "country",
+                        principalTable: "cities",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -193,9 +193,9 @@ namespace CSM.Infrastructure.Migrations
                 column: "creator_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_city_country_id",
+                name: "ix_cities_country_id",
                 schema: "csm",
-                table: "city",
+                table: "cities",
                 column: "country_id");
 
             migrationBuilder.CreateIndex(
@@ -217,10 +217,10 @@ namespace CSM.Infrastructure.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_users_country_id",
+                name: "ix_users_city_id",
                 schema: "csm",
                 table: "users",
-                column: "country_id");
+                column: "city_id");
         }
 
         /// <inheritdoc />
@@ -228,10 +228,6 @@ namespace CSM.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "channel_members",
-                schema: "csm");
-
-            migrationBuilder.DropTable(
-                name: "city",
                 schema: "csm");
 
             migrationBuilder.DropTable(
@@ -247,7 +243,11 @@ namespace CSM.Infrastructure.Migrations
                 schema: "csm");
 
             migrationBuilder.DropTable(
-                name: "country",
+                name: "cities",
+                schema: "csm");
+
+            migrationBuilder.DropTable(
+                name: "countries",
                 schema: "csm");
         }
     }

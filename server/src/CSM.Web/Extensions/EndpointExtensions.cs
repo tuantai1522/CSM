@@ -18,7 +18,7 @@ public static class EndpointExtensions
         services.TryAddEnumerable(serviceDescriptors);
     }
 
-    public static IApplicationBuilder MapEndpoints(
+    public static void MapEndpoints(
         this WebApplication app,
         RouteGroupBuilder? routeGroupBuilder = null)
     {
@@ -30,12 +30,5 @@ public static class EndpointExtensions
         {
             endpoint.MapEndpoint(builder);
         }
-
-        return app;
-    }
-
-    public static RouteHandlerBuilder HasPermission(this RouteHandlerBuilder app, string permission)
-    {
-        return app.RequireAuthorization(permission);
     }
 }

@@ -8,8 +8,13 @@ namespace CSM.Infrastructure.Database;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options), IUnitOfWork
 {
     public DbSet<User> Users { get; set; }
+    
+    public DbSet<City> Cities { get; set; }
+    public DbSet<Country> Countries { get; set; }
+    
     public DbSet<Channel> Channels { get; set; }
     public DbSet<ChannelMember> ChannelMembers { get; set; }
+    
     public DbSet<Post> Posts { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
