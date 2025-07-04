@@ -1,3 +1,4 @@
+using CSM.Core.Features.Countries;
 using CSM.Core.Features.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

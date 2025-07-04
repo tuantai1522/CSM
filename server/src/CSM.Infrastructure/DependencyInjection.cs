@@ -1,4 +1,5 @@
 using System.Text;
+using CSM.Core.Features.Countries;
 using CSM.Core.Features.Users;
 using CSM.Infrastructure.Authentication;
 using CSM.Infrastructure.Database;
@@ -75,6 +76,7 @@ public static class DependencyInjection
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services
+            .AddScoped<ICountryRepository, CountryRepository>()
             .AddScoped<IUserRepository, UserRepository>();
 
         return services;

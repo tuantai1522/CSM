@@ -2,7 +2,7 @@ using CSM.Core.Common;
 using CSM.Core.Features.Users;
 using MediatR;
 
-namespace CSM.UseCases.Users.RegisterUser;
+namespace CSM.UseCases.Features.Users.RegisterUser;
 
 public sealed record RegisterUserCommand(
     string NickName,

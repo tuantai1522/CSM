@@ -1,5 +1,6 @@
 using CSM.Core.Common;
 using CSM.Core.Features.Channels;
+using CSM.Core.Features.Countries;
 using CSM.Core.Features.Users;
 using Microsoft.EntityFrameworkCore;
 

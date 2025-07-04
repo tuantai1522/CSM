@@ -1,6 +1,8 @@
-namespace CSM.Core.Features.Users;
+using CSM.Core.Common;
 
-public sealed class Country
+namespace CSM.Core.Features.Countries;
+
+public sealed class Country : IAggregateRoot
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
     

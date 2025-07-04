@@ -1,5 +1,5 @@
 ﻿using CSM.Core.Features.Users;
-using CSM.UseCases.Users.RegisterUser;
+using CSM.UseCases.Features.Users.RegisterUser;
 using CSM.Web.Extensions;
 using CSM.Web.Infrastructure;
 using MediatR;

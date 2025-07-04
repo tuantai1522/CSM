@@ -3,7 +3,7 @@ using CSM.Core.Features.Users;
 using CSM.UseCases.Abstractions.Authentication;
 using MediatR;
 
-namespace CSM.UseCases.Users.RegisterUser;
+namespace CSM.UseCases.Features.Users.RegisterUser;
 
 internal sealed class RegisterUserCommandHandler(
     IUserProvider userProvider,

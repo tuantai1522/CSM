@@ -1,4 +1,4 @@
-namespace CSM.Core.Features.Users;
+namespace CSM.Core.Features.Countries;
 
 public sealed class City
 {

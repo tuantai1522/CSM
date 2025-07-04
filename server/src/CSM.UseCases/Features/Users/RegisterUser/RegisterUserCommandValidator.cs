@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace CSM.UseCases.Users.RegisterUser;
+namespace CSM.UseCases.Features.Users.RegisterUser;
 
 internal sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {
