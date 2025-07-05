@@ -8,7 +8,7 @@ public sealed class Country : IAggregateRoot
     
     public string Name { get; private set; } = null!;
 
-    private readonly HashSet<City> _cities = [];
+    private readonly List<City> _cities = [];
     
     public IReadOnlyList<City> Cities => _cities.ToList();
 

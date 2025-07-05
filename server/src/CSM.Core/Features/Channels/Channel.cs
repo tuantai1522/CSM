@@ -44,14 +44,14 @@ public class Channel : Entity, IAuditableEntity, IAggregateRoot
     /// <summary>
     /// List members of this channel.
     /// </summary>
-    private readonly HashSet<ChannelMember> _channelMembers = [];
+    private readonly List<ChannelMember> _channelMembers = [];
     
     public IReadOnlyList<ChannelMember> ChannelMembers => _channelMembers.ToList();
     
     /// <summary>
     /// List posts of this channel.
     /// </summary>
-    private readonly HashSet<Post> _posts = [];
+    private readonly List<Post> _posts = [];
     
     public IReadOnlyList<Post> Posts => _posts.ToList();
 

@@ -26,4 +26,11 @@ public sealed class CountryRepository(ApplicationDbContext context) : ICountryRe
             .Where(city => city.CountryId == countryId)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<Country> AddCountryAsync(Country country, CancellationToken cancellationToken)
+    {
+        var result = await _context.Countries.AddAsync(country, cancellationToken);
+        
+        return result.Entity;
+    }
 }
