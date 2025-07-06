@@ -13,12 +13,17 @@ public sealed class City
         
     }
 
-    public static City CreateCity(string name, Guid countryId)
+    public static City Create(string name, Guid countryId)
     {
         return new City
         {
             Name = name,
             CountryId = countryId
         };
+    }
+
+    public void Update(string cityName)
+    {
+        Name = cityName;
     }
 }

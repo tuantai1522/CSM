@@ -33,4 +33,11 @@ public sealed class CountryRepository(ApplicationDbContext context) : ICountryRe
         
         return result.Entity;
     }
+
+    public async Task<Country?> GetCountryByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await _context.Countries
+            .Include(c => c.Cities)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
 }

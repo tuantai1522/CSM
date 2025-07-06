@@ -8,6 +8,7 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
 {
     public void Configure(EntityTypeBuilder<Country> builder)
     {
+        builder.Property(p => p.Name).IsRequired();
         builder.Property(p => p.Name).HasMaxLength(64);
 
         // One country has multiple cities

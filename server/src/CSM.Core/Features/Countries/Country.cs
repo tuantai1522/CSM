@@ -33,5 +33,24 @@ public sealed class Country : IAggregateRoot
     /// Add city into list of cities
     /// </summary>
     /// <param name="city"></param>
-    public void AddCity(City city) => _cities.Add(city);
+    public Result<City> AddCity(City city)
+    {
+        _cities.Add(city);
+        
+        return Result.Success(city);
+    }
+
+    public Result<City> UpdateCity(Guid cityId, string cityName)
+    {
+        var city = _cities.FirstOrDefault(x => x.Id == cityId);
+
+        if (city is null)
+        {
+            return Result.Failure<City>(CountryErrors.CityNotFoundInCountry);
+        }
+
+        city.Update(cityName);
+        
+        return Result.Success(city);
+    }
 }
