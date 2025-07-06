@@ -9,12 +9,12 @@ internal sealed class GetCitiesByCountryId : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("countries/get-cities/{countryId:guid}", async (
-                Guid countryId,
-                IMediator mediator,
-                CancellationToken cancellationToken) =>
+        app.MapGet("countries/{id:guid}/get-cities", async (
+            Guid id,
+            IMediator mediator,
+            CancellationToken cancellationToken) =>
             {
-                var query = new GetCitiesByCountryIdQuery(countryId);
+                var query = new GetCitiesByCountryIdQuery(id);
 
                 var result = await mediator.Send(query, cancellationToken);
 

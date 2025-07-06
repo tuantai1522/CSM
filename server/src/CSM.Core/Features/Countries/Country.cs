@@ -53,4 +53,18 @@ public sealed class Country : IAggregateRoot
         
         return Result.Success(city);
     }
+    
+    public Result<City> DeleteCity(Guid cityId)
+    {
+        var city = _cities.FirstOrDefault(x => x.Id == cityId);
+
+        if (city is null)
+        {
+            return Result.Failure<City>(CountryErrors.CityNotFoundInCountry);
+        }
+
+        _cities.Remove(city);
+        
+        return Result.Success(city);
+    }
 }

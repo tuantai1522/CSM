@@ -2,11 +2,11 @@
 using CSM.Core.Features.Countries;
 using MediatR;
 
-namespace CSM.UseCases.Features.Countries.UpdateCity;
+namespace CSM.UseCases.Features.Countries.DeleteCity;
 
-internal sealed class UpdateCityCommandHandler(ICountryRepository countryRepository): IRequestHandler<UpdateCityCommand, Result<Guid>>
+internal sealed class DeleteCityCommandHandler(ICountryRepository countryRepository): IRequestHandler<DeleteCityCommand, Result<Guid>>
 {
-    public async Task<Result<Guid>> Handle(UpdateCityCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(DeleteCityCommand command, CancellationToken cancellationToken)
     {
         var country = await countryRepository.GetCountryByIdAsync(command.Id, cancellationToken);
 
@@ -15,7 +15,7 @@ internal sealed class UpdateCityCommandHandler(ICountryRepository countryReposit
             return Result.Failure<Guid>(CountryErrors.NotFoundById);
         }
         
-        var city = country.UpdateCity(command.CityId, command.Name);
+        var city = country.DeleteCity(command.CityId);
 
         // If this city is not found in the country, it will return a failure result.
         if (city.IsFailure)

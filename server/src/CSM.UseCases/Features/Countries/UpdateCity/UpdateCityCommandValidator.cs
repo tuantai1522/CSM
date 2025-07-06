@@ -12,7 +12,7 @@ internal sealed class UpdateCityCommandValidator : AbstractValidator<UpdateCityC
         RuleFor(c => c.Name)
             .NotEmpty().WithMessage("Name is required.");
         
-        RuleFor(c => c.CountryId)
-            .NotEmpty().WithMessage("CountryId is required.");
+        RuleFor(c => c.CityId)
+            .NotEmpty().WithMessage("CityId is required.");
     }
 }
