@@ -1,10 +1,12 @@
 ﻿using CSM.Core.Common;
 using CSM.Core.Features.Countries;
+using CSM.Core.Features.ErrorMessages;
+using CSM.UseCases.Abstractions.Authentication;
 using MediatR;
 
 namespace CSM.UseCases.Features.Countries.DeleteCity;
 
-internal sealed class DeleteCityCommandHandler(ICountryRepository countryRepository): IRequestHandler<DeleteCityCommand, Result<Guid>>
+internal sealed class DeleteCityCommandHandler(ICountryRepository countryRepository, IUserProvider userProvider): IRequestHandler<DeleteCityCommand, Result<Guid>>
 {
     public async Task<Result<Guid>> Handle(DeleteCityCommand command, CancellationToken cancellationToken)
     {
@@ -12,7 +14,7 @@ internal sealed class DeleteCityCommandHandler(ICountryRepository countryReposit
 
         if (country is null)
         {
-            return Result.Failure<Guid>(CountryErrors.NotFoundById);
+            return Result.Failure<Guid>(await userProvider.Error(ErrorCode.NotFoundById.ToString(), ErrorType.NotFound));
         }
         
         var city = country.DeleteCity(command.CityId);

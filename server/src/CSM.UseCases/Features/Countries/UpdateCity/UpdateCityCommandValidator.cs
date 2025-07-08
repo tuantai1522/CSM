@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CSM.Core.Features.ErrorMessages;
+using FluentValidation;
 
 namespace CSM.UseCases.Features.Countries.UpdateCity;
 
@@ -7,12 +8,12 @@ internal sealed class UpdateCityCommandValidator : AbstractValidator<UpdateCityC
     public UpdateCityCommandValidator()
     {
         RuleFor(c => c.Id)
-            .NotEmpty().WithMessage("Id is required.");
+            .NotEmpty().WithErrorCode(ErrorCode.CountryIdEmpty.ToString());
         
         RuleFor(c => c.Name)
-            .NotEmpty().WithMessage("Name is required.");
+            .NotEmpty().WithErrorCode(ErrorCode.CountryNameEmpty.ToString());
         
         RuleFor(c => c.CityId)
-            .NotEmpty().WithMessage("CityId is required.");
+            .NotEmpty().WithErrorCode(ErrorCode.CityIdEmpty.ToString());
     }
 }

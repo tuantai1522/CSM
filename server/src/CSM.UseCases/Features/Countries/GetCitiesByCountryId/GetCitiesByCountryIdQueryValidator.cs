@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CSM.Core.Features.ErrorMessages;
+using FluentValidation;
 
 namespace CSM.UseCases.Features.Countries.GetCitiesByCountryId;
 
@@ -7,7 +8,6 @@ internal sealed class GetCitiesByCountryIdQueryValidator : AbstractValidator<Get
     public GetCitiesByCountryIdQueryValidator()
     {
         RuleFor(c => c.CountryId)
-            .NotEmpty()
-            .WithMessage("CountryId is required.");
+            .NotEmpty().WithErrorCode(ErrorCode.CountryIdEmpty.ToString());
     }
 }

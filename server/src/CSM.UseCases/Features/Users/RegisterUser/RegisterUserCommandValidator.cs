@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CSM.Core.Features.ErrorMessages;
+using FluentValidation;
 
 namespace CSM.UseCases.Features.Users.RegisterUser;
 
@@ -7,23 +8,18 @@ internal sealed class RegisterUserCommandValidator : AbstractValidator<RegisterU
     public RegisterUserCommandValidator()
     {
         RuleFor(c => c.NickName)
-            .NotEmpty()
-            .WithMessage("Nick name is required.");
+            .NotEmpty().WithErrorCode(ErrorCode.NickNameEmpty.ToString());
         
         RuleFor(c => c.FirstName)
-            .NotEmpty()
-            .WithMessage("First name is required.");
+            .NotEmpty().WithErrorCode(ErrorCode.FirstNameEmpty.ToString());
         
         RuleFor(c => c.Email)
-            .NotEmpty()
-            .WithMessage("Email is required.");
+            .NotEmpty().WithErrorCode(ErrorCode.EmailEmpty.ToString());
         
         RuleFor(c => c.CityId)
-            .NotEmpty()
-            .WithMessage("CityId is required.");
+            .NotEmpty().WithErrorCode(ErrorCode.CityIdEmpty.ToString());
         
         RuleFor(c => c.Password)
-            .NotEmpty()
-            .WithMessage("Password is required.");
+            .NotEmpty().WithErrorCode(ErrorCode.PasswordEmpty.ToString());
     }
 }

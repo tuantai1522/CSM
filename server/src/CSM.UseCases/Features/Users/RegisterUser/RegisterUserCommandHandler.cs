@@ -1,4 +1,5 @@
 ﻿using CSM.Core.Common;
+using CSM.Core.Features.ErrorMessages;
 using CSM.Core.Features.Users;
 using CSM.UseCases.Abstractions.Authentication;
 using MediatR;
@@ -16,7 +17,7 @@ internal sealed class RegisterUserCommandHandler(
 
         if (verifyEmail)
         {
-            return Result.Failure<Guid>(UserErrors.EmailNotUnique);
+            return Result.Failure<Guid>(await userProvider.Error(ErrorCode.EmailNotUnique.ToString(), ErrorType.NotFound));
         }
 
         var user = User.CreateUser(command.NickName, 

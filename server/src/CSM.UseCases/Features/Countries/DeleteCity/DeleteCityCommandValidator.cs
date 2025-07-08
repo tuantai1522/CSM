@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CSM.Core.Features.ErrorMessages;
+using FluentValidation;
 
 namespace CSM.UseCases.Features.Countries.DeleteCity;
 
@@ -7,9 +8,9 @@ internal sealed class DeleteCityCommandValidator : AbstractValidator<DeleteCityC
     public DeleteCityCommandValidator()
     {
         RuleFor(c => c.Id)
-            .NotEmpty().WithMessage("Id is required.");
+            .NotEmpty().WithErrorCode(ErrorCode.CountryIdEmpty.ToString());
         
         RuleFor(c => c.CityId)
-            .NotEmpty().WithMessage("CityId is required.");
+            .NotEmpty().WithErrorCode(ErrorCode.CityIdEmpty.ToString());
     }
 }
