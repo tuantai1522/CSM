@@ -22,4 +22,7 @@ public record Error(string Code, string Description, ErrorType Type)
 
     public static Error Conflict(string code, string description) =>
         new(code, description, ErrorType.Conflict);
+    
+    public static Error DomainError(string code, ErrorType errorType) =>
+        new(code, string.Empty, errorType);
 }

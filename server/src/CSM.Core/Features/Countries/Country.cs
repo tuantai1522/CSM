@@ -1,4 +1,5 @@
 using CSM.Core.Common;
+using CSM.Core.Features.ErrorMessages;
 
 namespace CSM.Core.Features.Countries;
 
@@ -46,7 +47,7 @@ public sealed class Country : IAggregateRoot
 
         if (city is null)
         {
-            return Result.Failure<City>(CountryErrors.CityNotFoundInCountry);
+            return Result.Failure<City>(Error.DomainError(ErrorCode.NotFoundByCityInCountry.ToString(), ErrorType.Validation));
         }
 
         city.Update(cityName);
@@ -60,7 +61,7 @@ public sealed class Country : IAggregateRoot
 
         if (city is null)
         {
-            return Result.Failure<City>(CountryErrors.CityNotFoundInCountry);
+            return Result.Failure<City>(Error.DomainError(ErrorCode.NotFoundByCityInCountry.ToString(), ErrorType.Validation));
         }
 
         _cities.Remove(city);
