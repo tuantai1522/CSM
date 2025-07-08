@@ -2,9 +2,11 @@ using System.Text;
 using CSM.Core.Features.Countries;
 using CSM.Core.Features.ErrorMessages;
 using CSM.Core.Features.Users;
+using CSM.Infrastructure.Application;
 using CSM.Infrastructure.Authentication;
 using CSM.Infrastructure.Database;
 using CSM.Infrastructure.Repositories;
+using CSM.UseCases.Abstractions.Application;
 using CSM.UseCases.Abstractions.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +48,10 @@ public static class DependencyInjection
         });
 
         services.AddHttpContextAccessor();
+        
         services.AddScoped<IUserProvider, UserProvider>();
+        services.AddScoped<ITransformer, Transformer>();
+        
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ITokenProvider, TokenProvider>();
 

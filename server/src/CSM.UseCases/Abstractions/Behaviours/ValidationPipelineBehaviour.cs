@@ -1,10 +1,18 @@
 using CSM.Core.Common;
+using CSM.Core.Features.ErrorMessages;
+using CSM.UseCases.Abstractions.Application;
+using CSM.UseCases.Abstractions.Authentication;
 using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 
 namespace CSM.UseCases.Abstractions.Behaviours;
 
-public class ValidationPipelineBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+public class ValidationPipelineBehaviour<TRequest, TResponse>(
+    IEnumerable<IValidator<TRequest>> validators, 
+    IUserProvider userProvider, 
+    IErrorMessageRepository errorMessageRepository,
+    ITransformer transformer)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : Result
@@ -35,8 +43,10 @@ public class ValidationPipelineBehaviour<TRequest, TResponse>(IEnumerable<IValid
         
         if (failures.Length > 0)
         {
-            var error = new ValidationError(failures
-                .Select(f => Error.Validation(f.ErrorCode, f.ErrorMessage))
+            var errorMessages = await GetErrorMessages(cancellationToken, failures);
+
+            var error = new ValidationError(errorMessages
+                .Select(f => Error.Validation(((int)f.ErrorCode).ToString(), f.Details))
                 .ToArray());
 
             if (typeof(TResponse).IsGenericType && typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))
@@ -65,4 +75,22 @@ public class ValidationPipelineBehaviour<TRequest, TResponse>(IEnumerable<IValid
         return await next(cancellationToken);
     }
 
+    /// <summary>
+    /// To get list error messages by language string, list error codes
+    /// </summary>
+    /// <returns></returns>
+    private async Task<IReadOnlyList<ErrorMessage>> GetErrorMessages(CancellationToken cancellationToken, ValidationFailure[] failures)
+    {
+        var errorCodes = failures
+            .Select(failure => transformer.FromErrorCodeStringToEnum(failure.ErrorCode))
+            .ToList();
+
+        var language = userProvider.GetLanguageFromHeader();
+
+        var languageEnum = transformer.FromLanguageStringToEnum(language);
+            
+        var errorMessages = await errorMessageRepository
+            .GetErrorMessageByErrorCodesAndLanguageTypeAsync(errorCodes, languageEnum, cancellationToken);
+        return errorMessages;
+    }
 }

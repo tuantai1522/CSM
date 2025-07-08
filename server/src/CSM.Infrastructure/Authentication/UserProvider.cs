@@ -1,9 +1,12 @@
+using CSM.Core.Common;
+using CSM.Core.Features.ErrorMessages;
+using CSM.UseCases.Abstractions.Application;
 using CSM.UseCases.Abstractions.Authentication;
 using Microsoft.AspNetCore.Http;
 
 namespace CSM.Infrastructure.Authentication;
 
-public sealed class UserProvider(IHttpContextAccessor httpContextAccessor) : IUserProvider
+public sealed class UserProvider(IHttpContextAccessor httpContextAccessor, IErrorMessageRepository errorMessageRepository, ITransformer transformer) : IUserProvider
 {
     public string GetLocaleFromHeader()
     {
@@ -28,4 +31,19 @@ public sealed class UserProvider(IHttpContextAccessor httpContextAccessor) : IUs
             .User
             .GetUserId() ??
         throw new ApplicationException("User context is unavailable");
+
+    public async Task<Error> Error(string errorCode, ErrorType errorType)
+    {
+        string languageString = GetLanguageFromHeader();
+        
+        LanguageType languageType = transformer.FromLanguageStringToEnum(languageString);
+
+        ErrorCode errorCodeEnum = transformer.FromErrorCodeStringToEnum(errorCode);
+        
+        ErrorMessage errorMessage = await errorMessageRepository.GetErrorMessageByErrorCodeAndLanguageTypeAsync(errorCodeEnum, languageType, CancellationToken.None);
+
+        return new Error(errorCode, errorMessage.Details, errorType);
+    }
+    
+
 }

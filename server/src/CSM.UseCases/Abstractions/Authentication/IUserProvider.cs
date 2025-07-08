@@ -1,3 +1,6 @@
+using CSM.Core.Common;
+using CSM.Core.Features.ErrorMessages;
+
 namespace CSM.UseCases.Abstractions.Authentication;
 
 public interface IUserProvider
@@ -22,4 +25,9 @@ public interface IUserProvider
     /// Get UserId from Jwt token.
     /// </summary>
     Guid UserId { get; }
+
+    /// <summary>
+    /// Get Error from header language
+    /// </summary>
+    Task<Error> Error(string errorCode, ErrorType errorType);
 }
