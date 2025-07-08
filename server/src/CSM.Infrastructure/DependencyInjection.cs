@@ -5,6 +5,7 @@ using CSM.Core.Features.Users;
 using CSM.Infrastructure.Application;
 using CSM.Infrastructure.Authentication;
 using CSM.Infrastructure.Database;
+using CSM.Infrastructure.Interceptors;
 using CSM.Infrastructure.Repositories;
 using CSM.UseCases.Abstractions.Application;
 using CSM.UseCases.Abstractions.Authentication;
@@ -24,6 +25,7 @@ public static class DependencyInjection
         services
             .AddDatabase(configuration)
             .AddRepositories()
+            .AddInterceptors()
             .AddAuthenticationInternal(configuration)
             .AddAuthorizationInternal();
     
@@ -65,26 +67,35 @@ public static class DependencyInjection
 
         return services;
     }
-    
+
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         string? connectionString = configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContextPool<ApplicationDbContext>(
-            options => options
+            (sp, options) => options
                 .UseNpgsql(connectionString, npgsqlOptions =>
                     npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Default))
-                .UseSnakeCaseNamingConvention());
+                .UseSnakeCaseNamingConvention()
+                .AddInterceptors(sp.GetRequiredService<UpdateAuditableInterceptor>()));
 
         return services;
     }
-    
+
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services
             .AddScoped<IErrorMessageRepository, ErrorMessageRepository>()
             .AddScoped<ICountryRepository, CountryRepository>()
             .AddScoped<IUserRepository, UserRepository>();
+
+        return services;
+    }
+    
+    private static IServiceCollection AddInterceptors(this IServiceCollection services)
+    {
+        services
+            .AddSingleton<UpdateAuditableInterceptor>();
 
         return services;
     }
