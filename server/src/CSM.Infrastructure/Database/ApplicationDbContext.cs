@@ -1,6 +1,7 @@
 using CSM.Core.Common;
 using CSM.Core.Features.Channels;
 using CSM.Core.Features.Countries;
+using CSM.Core.Features.ErrorMessages;
 using CSM.Core.Features.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,13 +11,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     public DbSet<User> Users { get; set; }
     
-    public DbSet<City> Cities { get; set; }
     public DbSet<Country> Countries { get; set; }
+
+    public DbSet<ErrorMessage> ErrorMessages { get; set; }
+    
     
     public DbSet<Channel> Channels { get; set; }
-    public DbSet<ChannelMember> ChannelMembers { get; set; }
-    
-    public DbSet<Post> Posts { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

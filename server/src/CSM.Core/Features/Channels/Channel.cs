@@ -35,7 +35,7 @@ public class Channel : Entity, IAuditableEntity, IAggregateRoot
     public Guid CreatorId { get; private set; }
     public User Creator { get; private set; } = null!;
 
-    public long CreatedAt { get; private set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+    public long CreatedAt { get; private set; }
 
     public long? UpdatedAt { get; private set; }
 

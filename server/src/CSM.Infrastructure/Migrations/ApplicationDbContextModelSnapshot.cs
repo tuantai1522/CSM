@@ -109,12 +109,12 @@ namespace CSM.Infrastructure.Migrations
                         .HasColumnName("post_count");
 
                     b.HasKey("ChannelId", "UserId")
-                        .HasName("pk_channel_members");
+                        .HasName("pk_channel_member");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("ix_channel_members_user_id");
+                        .HasDatabaseName("ix_channel_member_user_id");
 
-                    b.ToTable("channel_members", "csm");
+                    b.ToTable("channel_member", "csm");
                 });
 
             modelBuilder.Entity("CSM.Core.Features.Channels.Post", b =>
@@ -159,24 +159,23 @@ namespace CSM.Infrastructure.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_posts");
+                        .HasName("pk_post");
 
                     b.HasIndex("ChannelId")
-                        .HasDatabaseName("ix_posts_channel_id");
+                        .HasDatabaseName("ix_post_channel_id");
 
                     b.HasIndex("RootId")
-                        .HasDatabaseName("ix_posts_root_id");
+                        .HasDatabaseName("ix_post_root_id");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("ix_posts_user_id");
+                        .HasDatabaseName("ix_post_user_id");
 
-                    b.ToTable("posts", "csm");
+                    b.ToTable("post", "csm");
                 });
 
-            modelBuilder.Entity("CSM.Core.Features.Users.City", b =>
+            modelBuilder.Entity("CSM.Core.Features.Countries.City", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -186,7 +185,8 @@ namespace CSM.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -198,7 +198,7 @@ namespace CSM.Infrastructure.Migrations
                     b.ToTable("cities", "csm");
                 });
 
-            modelBuilder.Entity("CSM.Core.Features.Users.Country", b =>
+            modelBuilder.Entity("CSM.Core.Features.Countries.Country", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -207,13 +207,41 @@ namespace CSM.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
                         .HasName("pk_countries");
 
                     b.ToTable("countries", "csm");
+                });
+
+            modelBuilder.Entity("CSM.Core.Features.ErrorMessages.ErrorMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)")
+                        .HasColumnName("details");
+
+                    b.Property<int>("ErrorCode")
+                        .HasColumnType("integer")
+                        .HasColumnName("error_code");
+
+                    b.Property<int>("LanguageType")
+                        .HasColumnType("integer")
+                        .HasColumnName("language_type");
+
+                    b.HasKey("Id")
+                        .HasName("pk_error_messages");
+
+                    b.ToTable("error_messages", "csm");
                 });
 
             modelBuilder.Entity("CSM.Core.Features.Users.User", b =>
@@ -318,14 +346,14 @@ namespace CSM.Infrastructure.Migrations
                         .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_channel_members_channels_channel_id");
+                        .HasConstraintName("fk_channel_member_channels_channel_id");
 
                     b.HasOne("CSM.Core.Features.Users.User", null)
                         .WithMany("ChannelMembers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_channel_members_users_user_id");
+                        .HasConstraintName("fk_channel_member_users_user_id");
                 });
 
             modelBuilder.Entity("CSM.Core.Features.Channels.Post", b =>
@@ -335,24 +363,24 @@ namespace CSM.Infrastructure.Migrations
                         .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_posts_channels_channel_id");
+                        .HasConstraintName("fk_post_channels_channel_id");
 
                     b.HasOne("CSM.Core.Features.Channels.Post", null)
                         .WithMany()
                         .HasForeignKey("RootId")
-                        .HasConstraintName("fk_posts_posts_root_id");
+                        .HasConstraintName("fk_post_post_root_id");
 
                     b.HasOne("CSM.Core.Features.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_posts_users_user_id");
+                        .HasConstraintName("fk_post_users_user_id");
                 });
 
-            modelBuilder.Entity("CSM.Core.Features.Users.City", b =>
+            modelBuilder.Entity("CSM.Core.Features.Countries.City", b =>
                 {
-                    b.HasOne("CSM.Core.Features.Users.Country", null)
+                    b.HasOne("CSM.Core.Features.Countries.Country", null)
                         .WithMany("Cities")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -362,7 +390,7 @@ namespace CSM.Infrastructure.Migrations
 
             modelBuilder.Entity("CSM.Core.Features.Users.User", b =>
                 {
-                    b.HasOne("CSM.Core.Features.Users.City", null)
+                    b.HasOne("CSM.Core.Features.Countries.City", null)
                         .WithMany()
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -377,7 +405,7 @@ namespace CSM.Infrastructure.Migrations
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("CSM.Core.Features.Users.Country", b =>
+            modelBuilder.Entity("CSM.Core.Features.Countries.Country", b =>
                 {
                     b.Navigation("Cities");
                 });

@@ -22,7 +22,7 @@ public class Post
     /// </summary>
     public PostType Type { get; private set; } = PostType.Normal;
 
-    public long CreatedAt { get; private set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+    public long CreatedAt { get; private set; }
     public long? UpdatedAt { get; private set; }
     public long? DeletedAt { get; private set; }
 

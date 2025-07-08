@@ -20,11 +20,26 @@ namespace CSM.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false)
+                    name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_countries", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "error_messages",
+                schema: "csm",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    error_code = table.Column<int>(type: "integer", nullable: false),
+                    details = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    language_type = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_error_messages", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -33,7 +48,7 @@ namespace CSM.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     country_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -109,7 +124,7 @@ namespace CSM.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "channel_members",
+                name: "channel_member",
                 schema: "csm",
                 columns: table => new
                 {
@@ -123,16 +138,16 @@ namespace CSM.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_channel_members", x => new { x.channel_id, x.user_id });
+                    table.PrimaryKey("pk_channel_member", x => new { x.channel_id, x.user_id });
                     table.ForeignKey(
-                        name: "fk_channel_members_channels_channel_id",
+                        name: "fk_channel_member_channels_channel_id",
                         column: x => x.channel_id,
                         principalSchema: "csm",
                         principalTable: "channels",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_channel_members_users_user_id",
+                        name: "fk_channel_member_users_user_id",
                         column: x => x.user_id,
                         principalSchema: "csm",
                         principalTable: "users",
@@ -141,7 +156,7 @@ namespace CSM.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "posts",
+                name: "post",
                 schema: "csm",
                 columns: table => new
                 {
@@ -157,22 +172,22 @@ namespace CSM.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_posts", x => x.id);
+                    table.PrimaryKey("pk_post", x => x.id);
                     table.ForeignKey(
-                        name: "fk_posts_channels_channel_id",
+                        name: "fk_post_channels_channel_id",
                         column: x => x.channel_id,
                         principalSchema: "csm",
                         principalTable: "channels",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_posts_posts_root_id",
+                        name: "fk_post_post_root_id",
                         column: x => x.root_id,
                         principalSchema: "csm",
-                        principalTable: "posts",
+                        principalTable: "post",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "fk_posts_users_user_id",
+                        name: "fk_post_users_user_id",
                         column: x => x.user_id,
                         principalSchema: "csm",
                         principalTable: "users",
@@ -181,9 +196,9 @@ namespace CSM.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_channel_members_user_id",
+                name: "ix_channel_member_user_id",
                 schema: "csm",
-                table: "channel_members",
+                table: "channel_member",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
@@ -199,21 +214,21 @@ namespace CSM.Infrastructure.Migrations
                 column: "country_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_posts_channel_id",
+                name: "ix_post_channel_id",
                 schema: "csm",
-                table: "posts",
+                table: "post",
                 column: "channel_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_posts_root_id",
+                name: "ix_post_root_id",
                 schema: "csm",
-                table: "posts",
+                table: "post",
                 column: "root_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_posts_user_id",
+                name: "ix_post_user_id",
                 schema: "csm",
-                table: "posts",
+                table: "post",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
@@ -227,11 +242,15 @@ namespace CSM.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "channel_members",
+                name: "channel_member",
                 schema: "csm");
 
             migrationBuilder.DropTable(
-                name: "posts",
+                name: "error_messages",
+                schema: "csm");
+
+            migrationBuilder.DropTable(
+                name: "post",
                 schema: "csm");
 
             migrationBuilder.DropTable(

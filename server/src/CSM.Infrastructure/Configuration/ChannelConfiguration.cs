@@ -8,6 +8,8 @@ public class ChannelConfiguration : IEntityTypeConfiguration<Channel>
 {
     public void Configure(EntityTypeBuilder<Channel> builder)
     {
+        builder.Property(x => x.DisplayName).IsRequired();
+        
         // ChannelType is an enum (to store string in database)
         builder.Property(p => p.Type)
             .HasConversion(

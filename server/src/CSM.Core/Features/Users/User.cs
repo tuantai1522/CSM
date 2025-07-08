@@ -36,7 +36,7 @@ public sealed class User : IAuditableEntity, IAggregateRoot
     public string TimeZone { get; private set; } = null!;
     public string Locale { get; private set; } = null!;
     
-    public long CreatedAt { get; private set; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+    public long CreatedAt { get; private set; }
     
     public long? UpdatedAt { get; private set; }
 
