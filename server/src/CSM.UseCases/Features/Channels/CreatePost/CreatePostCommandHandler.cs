@@ -12,8 +12,15 @@ internal sealed class CreatePostCommandHandler(
 {
     public async Task<Result<Guid>> Handle(CreatePostCommand command, CancellationToken cancellationToken)
     {
-        var channel = await channelRepository.GetChannelByIdAsync(command.ChannelId, cancellationToken);
-
+        var channel = await channelRepository.GetChannelByIdAsync(
+            command.ChannelId, 
+            cancellationToken, 
+            
+            // Include channel members and posts
+            x => x.ChannelMembers.Where(ch => ch.ChannelId == command.ChannelId),
+            x => x.Posts.Where(ch => ch.ChannelId == command.ChannelId)
+        );
+        
         if (channel is null)
         {
             return Result.Failure<Guid>(await userProvider.Error(ErrorCode.NotFoundById.ToString(), ErrorType.NotFound));

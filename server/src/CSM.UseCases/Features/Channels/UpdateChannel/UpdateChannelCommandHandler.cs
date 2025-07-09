@@ -12,7 +12,13 @@ internal sealed class UpdateChannelCommandHandler(
 {
     public async Task<Result<Guid>> Handle(UpdateChannelCommand command, CancellationToken cancellationToken)
     {
-        var channel = await channelRepository.GetChannelByIdAsync(command.Id, cancellationToken);
+        var channel = await channelRepository.GetChannelByIdAsync(
+            command.Id, 
+            cancellationToken, 
+            
+            // Include channel members
+            x => x.ChannelMembers.Where(ch => ch.ChannelId == command.Id)
+        );
 
         if (channel is null)
         {

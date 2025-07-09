@@ -1,6 +1,8 @@
+using CSM.Core.Common;
+
 namespace CSM.Core.Features.ErrorMessages;
 
-public sealed class ErrorMessage
+public sealed class ErrorMessage : IAggregateRoot
 {
     public Guid Id { get; init; } = Guid.CreateVersion7();
     
