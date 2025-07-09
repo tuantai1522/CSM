@@ -21,5 +21,9 @@ public enum ErrorCode
     ListMembersAndOwnersEmpty = 1015,
     ThisUserIsNotInChannel = 1016,
     UnAuthorizedInChannel = 1017,
+    MessageEmpty = 1018,
+    ThisRootIdNotInChannel = 1019,
+    RootMessageIsRootOfAnotherRoot = 1020,
+    ThisUserIsAlreadyInChannel = 1021,
     
 }

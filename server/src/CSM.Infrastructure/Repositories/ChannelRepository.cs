@@ -12,8 +12,11 @@ public sealed class ChannelRepository(ApplicationDbContext context) : IChannelRe
     public IUnitOfWork UnitOfWork => _context;
 
     public async Task<Channel?> GetChannelByIdAsync(Guid channelId, CancellationToken cancellationToken)
+        // Todo: To check this to only include necessary navigation properties
         => await _context.Channels
-            .Include(x => x.ChannelMembers)
+            .AsSplitQuery()
+            .Include(x => x.ChannelMembers.Where(cm => cm.ChannelId == channelId))
+            .Include(x => x.Posts.Where(cm => cm.ChannelId == channelId))
             .FirstOrDefaultAsync(x => x.Id == channelId, cancellationToken: cancellationToken);
     
     public async Task<Channel> AddChannelAsync(Channel channel, CancellationToken cancellationToken)

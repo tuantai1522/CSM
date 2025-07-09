@@ -34,7 +34,8 @@ public class Post
             UserId = userId,
             RootId = rootId,
             Message = message,
-            Type = type
+            Type = type,
+            CreatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
         };
     }
 }

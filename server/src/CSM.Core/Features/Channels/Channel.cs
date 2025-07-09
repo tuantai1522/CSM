@@ -87,6 +87,7 @@ public class Channel : Entity, IAuditableEntity, IAggregateRoot
     /// </summary>
     public void AddMember(Guid userId, bool isOwner)
     {
+        // Todo: To check userId is in this channel before or not (already add error code in database (1021)
         // Assign total post count to this channel member
         var channelMember = ChannelMember.CreateChannelMember(Id, userId, isOwner, TotalPostCount);
         _channelMembers.Add(channelMember);
@@ -95,10 +96,35 @@ public class Channel : Entity, IAuditableEntity, IAggregateRoot
     /// <summary>
     /// Create post int channel
     /// </summary>
-    public void CreatePost(Guid userId, Guid? rootId, string message, PostType type = PostType.Normal)
+    public Result<Post> CreatePost(Guid userId, Guid? rootId, string message, PostType type = PostType.Normal)
     {
+        // To verify this user is in channel
+        var member = _channelMembers.FirstOrDefault(x => x.UserId == userId);
+        if (member is null)
+        {
+            return Result.Failure<Post>(Error.DomainError(ErrorCode.ThisUserIsNotInChannel.ToString(), ErrorType.NotFound));
+        }
+
+        if (rootId.HasValue)
+        {
+            // This rootId is not in current channel
+            if (!_posts.Any(x => x.Id == rootId.Value))
+            {
+                return Result.Failure<Post>(Error.DomainError(ErrorCode.ThisRootIdNotInChannel.ToString(), ErrorType.Problem));
+            }
+            
+            // This rootId already has another rootId (thread in thread)
+            var rootPost = _posts.FirstOrDefault(x => x.Id == rootId.Value);
+            if (rootPost?.RootId != null)
+            {
+                return Result.Failure<Post>(Error.DomainError(ErrorCode.RootMessageIsRootOfAnotherRoot.ToString(), ErrorType.Problem));
+            }
+        }
+        
         var post = Post.CreatePost(Id, userId, rootId, message, type);
         _posts.Add(post);
+
+        return Result.Success(post);
     }
 
     /// <summary>

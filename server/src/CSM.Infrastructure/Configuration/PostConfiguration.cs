@@ -9,6 +9,8 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
 {
     public void Configure(EntityTypeBuilder<Post> builder)
     {
+        builder.Property(c => c.Id).ValueGeneratedNever();
+
         builder.Property(p => p.Message).IsRequired();
 
         // One post has multiple posts in thread
