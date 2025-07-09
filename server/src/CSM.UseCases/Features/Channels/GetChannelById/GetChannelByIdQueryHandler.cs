@@ -10,13 +10,13 @@ internal sealed class GetChannelByIdQueryHandler(
     IChannelRepository channelRepository,
     IUserProvider userProvider): IRequestHandler<GetChannelByIdQuery, Result<GetChannelByIdResponse>>
 {
-    public async Task<Result<GetChannelByIdResponse>> Handle(GetChannelByIdQuery command, CancellationToken cancellationToken)
+    public async Task<Result<GetChannelByIdResponse>> Handle(GetChannelByIdQuery query, CancellationToken cancellationToken)
     {
         var channel = await channelRepository.GetChannelByIdAsync(
-            command.Id, 
+            query.Id, 
             cancellationToken, 
             // Include channel members
-            x => x.ChannelMembers.Where(ch => ch.ChannelId == command.Id)
+            x => x.ChannelMembers.Where(ch => ch.ChannelId == query.Id)
         );
 
         return channel is null ? 

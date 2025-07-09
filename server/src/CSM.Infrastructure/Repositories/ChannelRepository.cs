@@ -12,7 +12,8 @@ public sealed class ChannelRepository(ApplicationDbContext context) : IChannelRe
 
     public IUnitOfWork UnitOfWork => _context;
 
-    public async Task<Channel?> GetChannelByIdAsync(Guid channelId, CancellationToken cancellationToken, params Expression<Func<Channel, object>>[]? includeProperties)
+    public async Task<Channel?> GetChannelByIdAsync(Guid channelId, CancellationToken cancellationToken,
+        params Expression<Func<Channel, object>>[]? includeProperties)
     {
         var query = _context.Channels.AsSplitQuery().Where(x => x.Id == channelId);
 
@@ -24,11 +25,17 @@ public sealed class ChannelRepository(ApplicationDbContext context) : IChannelRe
 
         return await query.FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
-    
+
     public async Task<Channel> AddChannelAsync(Channel channel, CancellationToken cancellationToken)
     {
         var result = await _context.Channels.AddAsync(channel, cancellationToken);
 
         return result.Entity;
     }
+
+    public async Task<IReadOnlyList<Channel>> GetChannelsByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+        => await _context.Channels
+            .Where(x => x.ChannelMembers.Any(ch => ch.UserId == userId))
+            .OrderByDescending(x => x.LastPostAt)
+            .ToListAsync(cancellationToken);
 }

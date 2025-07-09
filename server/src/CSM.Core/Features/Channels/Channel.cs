@@ -123,7 +123,11 @@ public class Channel : Entity, IAuditableEntity, IAggregateRoot
         
         var post = Post.CreatePost(Id, userId, rootId, message, type);
         _posts.Add(post);
-
+        
+        // Update information message of channel
+        LastPostAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        TotalPostCount += 1;
+            
         return Result.Success(post);
     }
 
