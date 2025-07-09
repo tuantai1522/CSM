@@ -15,4 +15,7 @@ public enum ErrorCode
     PasswordEmpty = 1010,
     NickNameEmpty = 1011,
     FirstNameEmpty = 1012,
+    
+    ChannelNameEmpty = 1013,
+    ListMembersAndOwnersEmpty = 1014
 }

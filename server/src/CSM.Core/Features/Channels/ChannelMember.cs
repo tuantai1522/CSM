@@ -43,7 +43,6 @@ public sealed class ChannelMember
             ChannelId = channelId,
             UserId = userId,
             IsOwner = isOwner,
-            LastUpdatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
             LastViewedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
             PostCount = postCount,
         };

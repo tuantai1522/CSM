@@ -1,4 +1,5 @@
 using System.Text;
+using CSM.Core.Features.Channels;
 using CSM.Core.Features.Countries;
 using CSM.Core.Features.ErrorMessages;
 using CSM.Core.Features.Users;
@@ -86,6 +87,7 @@ public static class DependencyInjection
     {
         services
             .AddScoped<IErrorMessageRepository, ErrorMessageRepository>()
+            .AddScoped<IChannelRepository, ChannelRepository>()
             .AddScoped<ICountryRepository, CountryRepository>()
             .AddScoped<IUserRepository, UserRepository>();
 
