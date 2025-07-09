@@ -1,4 +1,5 @@
 using CSM.Core.Common;
+using CSM.Core.Features.ErrorMessages;
 using CSM.Core.Features.Users;
 
 namespace CSM.Core.Features.Channels;
@@ -98,6 +99,31 @@ public class Channel : Entity, IAuditableEntity, IAggregateRoot
     {
         var post = Post.CreatePost(Id, userId, rootId, message, type);
         _posts.Add(post);
+    }
+
+    /// <summary>
+    /// Update information of channel
+    /// </summary>
+    public Result<Channel> UpdateChannel(string displayName, string? purpose, Guid userId)
+    {
+        // To verify this user is in channel
+        var member = _channelMembers.FirstOrDefault(x => x.UserId == userId);
+        if (member is null)
+        {
+            return Result.Failure<Channel>(Error.DomainError(ErrorCode.ThisUserIsNotInChannel.ToString(), ErrorType.NotFound));
+        }
+
+        // To verify role of this user 
+        if (!member.IsOwner)
+        {
+            return Result.Failure<Channel>(Error.DomainError(ErrorCode.UnAuthorizedInChannel.ToString(), ErrorType.NotFound));
+        }
+        
+        DisplayName = displayName;
+        Purpose = purpose;
+        
+        return Result.Success(this);
+
     }
 
 }

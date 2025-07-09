@@ -16,6 +16,10 @@ public enum ErrorCode
     NickNameEmpty = 1011,
     FirstNameEmpty = 1012,
     
-    ChannelNameEmpty = 1013,
-    ListMembersAndOwnersEmpty = 1014
+    ChannelIdEmpty = 1013,
+    ChannelNameEmpty = 1014,
+    ListMembersAndOwnersEmpty = 1015,
+    ThisUserIsNotInChannel = 1016,
+    UnAuthorizedInChannel = 1017,
+    
 }
