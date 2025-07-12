@@ -14,9 +14,9 @@ internal sealed class GetChannelById : IEndpoint
                 IMediator mediator,
                 CancellationToken cancellationToken) =>
             {
-                var command = new GetChannelByIdQuery(id);
+                var query = new GetChannelByIdQuery(id);
 
-                var result = await mediator.Send(command, cancellationToken);
+                var result = await mediator.Send(query, cancellationToken);
 
                 return result.Match(Results.Ok, CustomResults.Problem);
             })

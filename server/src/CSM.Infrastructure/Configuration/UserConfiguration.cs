@@ -43,7 +43,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         
         // One user belongs to multiple channels
         builder.HasMany(r => r.ChannelMembers)
-            .WithOne()
+            .WithOne(x => x.User)
             .HasForeignKey(p => p.UserId);
 
     }

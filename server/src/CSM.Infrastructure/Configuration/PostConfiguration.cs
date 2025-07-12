@@ -9,6 +9,8 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
 {
     public void Configure(EntityTypeBuilder<Post> builder)
     {
+        builder.ToTable("posts");
+        
         builder.Property(c => c.Id).ValueGeneratedNever();
 
         builder.Property(p => p.Message).IsRequired();
@@ -18,7 +20,7 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
             .WithMany()
             .HasForeignKey(u => u.RootId);
         
-        builder.HasOne<User>()
+        builder.HasOne(x => x.User)
             .WithMany()
             .HasForeignKey(u => u.UserId);
         
@@ -27,5 +29,9 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
             .HasConversion(
                 v => v.ToString(),
                 v => Enum.Parse<PostType>(v));
+        
+        // To create idx on column CreatedAt and Id
+        builder
+            .HasIndex(p => new { p.CreatedAt, p.Id });
     }
 }

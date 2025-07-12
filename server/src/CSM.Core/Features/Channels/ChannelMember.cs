@@ -1,3 +1,5 @@
+using CSM.Core.Features.Users;
+
 namespace CSM.Core.Features.Channels;
 
 public sealed class ChannelMember
@@ -5,6 +7,7 @@ public sealed class ChannelMember
     public Guid ChannelId { get; private set; }
     
     public Guid UserId { get; private set; }
+    public User User { get; private set; } = null!;
     
     public bool IsOwner { get; private set; }
     

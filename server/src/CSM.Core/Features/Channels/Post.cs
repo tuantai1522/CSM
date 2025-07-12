@@ -1,3 +1,5 @@
+using CSM.Core.Features.Users;
+
 namespace CSM.Core.Features.Channels;
 
 public class Post
@@ -5,7 +7,8 @@ public class Post
     public Guid Id { get; init; } = Guid.CreateVersion7();
 
     public Guid ChannelId { get; private set; } 
-    public Guid UserId { get; private set; } 
+    public Guid UserId { get; private set; }
+    public User User { get; private set; } = null!;
     
     /// <summary>
     /// ID of root post if this was sent in thread

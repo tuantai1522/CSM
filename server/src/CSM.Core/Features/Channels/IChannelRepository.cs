@@ -7,7 +7,9 @@ public interface IChannelRepository : IRepository<Channel>
 {
     Task<Channel?> GetChannelByIdAsync(Guid channelId, CancellationToken cancellationToken, params Expression<Func<Channel, object>>[]? includeProperties);
     
-    public Task<Channel> AddChannelAsync(Channel channel, CancellationToken cancellationToken);
+    Task<Channel> AddChannelAsync(Channel channel, CancellationToken cancellationToken);
     
-    public Task<IReadOnlyList<Channel>> GetChannelsByUserIdAsync(Guid userId, CancellationToken cancellationToken);
+    Task<IReadOnlyList<Channel>> GetChannelsByUserIdAsync(Guid userId, CancellationToken cancellationToken);
+
+    Task<List<Post>> GetPostsByChannelIdAsync(Guid channelId, long? createdAt, Guid? lastId, bool isScrollUp, int pageSize, CancellationToken cancellationToken);
 }

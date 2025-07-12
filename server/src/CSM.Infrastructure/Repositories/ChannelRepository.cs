@@ -38,4 +38,40 @@ public sealed class ChannelRepository(ApplicationDbContext context) : IChannelRe
             .Where(x => x.ChannelMembers.Any(ch => ch.UserId == userId))
             .OrderByDescending(x => x.LastPostAt)
             .ToListAsync(cancellationToken);
+
+    public async Task<List<Post>> GetPostsByChannelIdAsync(Guid channelId, long? createdAt, Guid? lastId,
+        bool isScrollUp, int pageSize, CancellationToken cancellationToken)
+    {
+        var query = _context.Channels
+            .Where(c => c.Id == channelId)
+            .SelectMany(c => c.Posts)
+            .AsQueryable();
+
+        if (createdAt.HasValue && lastId.HasValue)
+        {
+            if (isScrollUp)
+            {
+                query = query.Where(post => EF.Functions.LessThanOrEqual(
+                    ValueTuple.Create(post.CreatedAt, post.Id),
+                    ValueTuple.Create(createdAt.Value, lastId.Value)));
+            }
+            else
+            {
+                query = query.Where(post => EF.Functions.GreaterThanOrEqual(
+                    ValueTuple.Create(post.CreatedAt, post.Id),
+                    ValueTuple.Create(createdAt.Value, lastId.Value)));
+            }
+        }
+
+        query = query
+            .OrderByDescending(p => p.CreatedAt)
+            .ThenByDescending(p => p.Id);
+        
+        var result = await query
+            .Include(x => x.User)
+            .Take(pageSize + 1)
+            .ToListAsync(cancellationToken);
+
+        return result;
+    }
 }
