@@ -25,5 +25,6 @@ public enum ErrorCode
     ThisRootIdNotInChannel = 1019,
     RootMessageIsRootOfAnotherRoot = 1020,
     ThisUserIsAlreadyInChannel = 1021,
-    
+    PageMustBePositive = 1022,
+    PageSizeMustBePositive = 1023,
 }

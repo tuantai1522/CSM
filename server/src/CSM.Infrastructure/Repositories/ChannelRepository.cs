@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using CSM.Core.Common;
 using CSM.Core.Features.Channels;
+using CSM.Core.Features.Users;
 using CSM.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -73,5 +74,33 @@ public sealed class ChannelRepository(ApplicationDbContext context) : IChannelRe
             .ToListAsync(cancellationToken);
 
         return result;
+    }
+
+    public async Task<List<User>> GetUsersByRoleAndChannelIdAsync(Guid channelId, bool? isOwner, int page, int pageSize, CancellationToken cancellationToken)
+    {
+        int skip = (page - 1) * pageSize;
+        
+        return await GetChannelMembersByRoleAndChannelIdQuery(channelId, isOwner)
+            .Select(x => x.User)
+            .OrderBy(x => x.FirstName)
+            .Skip(skip)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<int> CountUsersByRoleAndChannelIdAsync(Guid channelId, bool? isOwner, CancellationToken cancellationToken)
+    {
+        return await GetChannelMembersByRoleAndChannelIdQuery(channelId, isOwner)
+            .CountAsync(cancellationToken);
+    }
+
+    private IQueryable<ChannelMember> GetChannelMembersByRoleAndChannelIdQuery(Guid channelId, bool? isOwner)
+    {
+        return _context.Channels
+            .Where(c => c.Id == channelId)
+            .SelectMany(c => c.ChannelMembers)
+            .Where(cm => !isOwner.HasValue || cm.IsOwner == isOwner.Value)
+            .Include(x => x.User)
+            .AsQueryable();
     }
 }

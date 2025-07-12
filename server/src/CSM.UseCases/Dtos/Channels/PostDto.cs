@@ -1,4 +1,4 @@
-namespace CSM.UseCases.Features.Channels.GetPostsByChannelId;
+namespace CSM.UseCases.Dtos.Channels;
 
 public sealed record PostDto(
     Guid MessageId,
