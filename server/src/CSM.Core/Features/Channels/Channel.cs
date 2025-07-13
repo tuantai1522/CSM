@@ -87,10 +87,41 @@ public class Channel : Entity, IAuditableEntity, IAggregateRoot
     /// </summary>
     public void AddMember(Guid userId, bool isOwner)
     {
-        // Todo: To check userId is in this channel before or not (already add error code in database (1021)
         // Assign total post count to this channel member
         var channelMember = ChannelMember.CreateChannelMember(Id, userId, isOwner, TotalPostCount);
         _channelMembers.Add(channelMember);
+    }
+    
+    /// <summary>
+    /// Add member into channel with current user
+    /// </summary>
+    public Result AddMember(Guid currentUserId, Guid userId, bool isOwner)
+    {
+        // To verify this user is in channel before or not
+        var member = _channelMembers.FirstOrDefault(x => x.UserId == userId);
+        if (member is not null)
+        {
+            return Result.Failure(Error.DomainError(ErrorCode.ThisUserIsAlreadyInChannel.ToString(), ErrorType.Validation));
+        }
+        
+        // To verify this user is in channel
+        var currentUser = _channelMembers.FirstOrDefault(x => x.UserId == currentUserId);
+        if (currentUser is null)
+        {
+            return Result.Failure(Error.DomainError(ErrorCode.ThisUserIsNotInChannel.ToString(), ErrorType.NotFound));
+        }
+        
+        // To verify role of this user 
+        if (!currentUser.IsOwner)
+        {
+            return Result.Failure(Error.DomainError(ErrorCode.UnAuthorizedInChannel.ToString(), ErrorType.Validation));
+        }
+        
+        // Assign total post count to this channel member
+        var channelMember = ChannelMember.CreateChannelMember(Id, userId, isOwner, TotalPostCount);
+        _channelMembers.Add(channelMember);
+
+        return Result.Success();
     }
 
     /// <summary>
@@ -146,7 +177,7 @@ public class Channel : Entity, IAuditableEntity, IAggregateRoot
         // To verify role of this user 
         if (!member.IsOwner)
         {
-            return Result.Failure<Channel>(Error.DomainError(ErrorCode.UnAuthorizedInChannel.ToString(), ErrorType.NotFound));
+            return Result.Failure<Channel>(Error.DomainError(ErrorCode.UnAuthorizedInChannel.ToString(), ErrorType.Validation));
         }
         
         DisplayName = displayName;
