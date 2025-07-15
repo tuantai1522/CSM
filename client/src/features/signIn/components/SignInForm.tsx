@@ -1,21 +1,17 @@
-import google from "../../assets/images/google.png";
-import icon from "../../assets/icons/icon-144x144.png";
+import google from "../../../assets/images/google.png";
+import icon from "../../../assets/icons/icon-144x144.png";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Form, FormControl, FormField, FormItem } from "../shared/Form";
-import { FormInput } from "../shared/FormInput";
+import { Form, FormControl, FormField, FormItem } from "../../shared/Form";
 
-const signInFormSchema = z.object({
-  email: z.email(),
-  passWord: z.string().min(8),
-});
+import { FormInput } from "../../shared/FormInput";
+import { PasswordInput } from "../../shared/PasswordInput";
 
-type SignInForm = z.infer<typeof signInFormSchema>;
+import type { SignInForm } from "../type";
+import { signInFormSchema } from "../schema";
 
 export function SignInForm() {
   const form = useForm<SignInForm>({
-    mode: "onChange",
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
       email: "",
@@ -59,7 +55,11 @@ export function SignInForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <FormInput {...field} label="Password" requiredMark />
+                          <PasswordInput
+                            {...field}
+                            label="Password"
+                            requiredMark
+                          />
                         </FormControl>
                       </FormItem>
                     )}
