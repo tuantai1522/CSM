@@ -1,14 +1,16 @@
+import { forwardRef } from "react";
 import { useFormField } from "./Form";
 import { cn } from "../../lib/cn";
-import { forwardRef, type InputHTMLAttributes } from "react";
 
-interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+interface SelectInputProps
+  extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  label?: string;
   requiredMark?: boolean;
+  options: { label: string; value: string }[];
 }
 
-export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
-  ({ label, requiredMark = false, className, ...props }, ref) => {
+export const SelectInput = forwardRef<HTMLSelectElement, SelectInputProps>(
+  ({ label, requiredMark, className, options, ...props }, ref) => {
     const { formItemId, formDescriptionId, formMessageId, error } =
       useFormField();
 
@@ -23,7 +25,8 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
             {requiredMark && <span className="text-red-500">*</span>}
           </label>
         )}
-        <input
+
+        <select
           ref={ref}
           id={formItemId}
           aria-describedby={
@@ -31,11 +34,18 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
           }
           aria-invalid={!!error}
           className={cn(
-            "w-full rounded border border-gray-300 px-3 pt-4 pb-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800 dark:text-white",
+            "w-full rounded border border-gray-300 bg-white px-3 pt-4 pb-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800 dark:text-white",
             className
           )}
           {...props}
-        />
+        >
+          <option value="">-- Chọn --</option>
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
 
         {error && (
           <p id={formMessageId} className="mt-1 text-sm text-red-500">
@@ -46,3 +56,5 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
     );
   }
 );
+
+SelectInput.displayName = "SelectInput";

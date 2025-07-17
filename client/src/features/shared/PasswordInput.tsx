@@ -5,11 +5,11 @@ import { Eye, EyeOff } from "lucide-react";
 
 interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  requiredMark: boolean;
+  requiredMark?: boolean;
 }
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ label, requiredMark, className, ...props }, ref) => {
+  ({ label, requiredMark = false, className, ...props }, ref) => {
     const { formItemId, formDescriptionId, formMessageId, error } =
       useFormField();
 
