@@ -27,4 +27,6 @@ public enum ErrorCode
     ThisUserIsAlreadyInChannel = 1021,
     PageMustBePositive = 1022,
     PageSizeMustBePositive = 1023,
+    
+    ThisUserAlreadyBelongsToThisRole = 1024,
 }
