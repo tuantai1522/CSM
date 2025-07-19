@@ -2,7 +2,7 @@ using CSM.Core.Features.Countries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CSM.Infrastructure.Configuration;
+namespace CSM.Infrastructure.Configuration.Countries;
 
 public class CityConfiguration : IEntityTypeConfiguration<City>
 {

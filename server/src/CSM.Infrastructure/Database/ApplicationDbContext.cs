@@ -2,7 +2,9 @@ using CSM.Core.Common;
 using CSM.Core.Features.Channels;
 using CSM.Core.Features.Countries;
 using CSM.Core.Features.ErrorMessages;
+using CSM.Core.Features.Roles;
 using CSM.Core.Features.Users;
+using CSM.Core.Features.Views;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSM.Infrastructure.Database;
@@ -15,8 +17,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<ErrorMessage> ErrorMessages { get; set; }
     
-    
     public DbSet<Channel> Channels { get; set; }
+    
+    public DbSet<Role> Roles { get; set; }
+    
+    public DbSet<View> Views { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

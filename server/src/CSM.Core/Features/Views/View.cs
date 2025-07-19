@@ -3,7 +3,7 @@ namespace CSM.Core.Features.Views;
 
 public sealed class View : IAggregateRoot
 {
-    public int Id { get; private set; }
+    public int Id { get; private init; }
 
     public string Name { get; private set; } = null!;
     
