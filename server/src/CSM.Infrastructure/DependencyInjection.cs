@@ -2,12 +2,15 @@ using System.Text;
 using CSM.Core.Features.Channels;
 using CSM.Core.Features.Countries;
 using CSM.Core.Features.ErrorMessages;
+using CSM.Core.Features.Roles;
 using CSM.Core.Features.Users;
+using CSM.Core.Features.Views;
 using CSM.Infrastructure.Application;
 using CSM.Infrastructure.Authentication;
 using CSM.Infrastructure.Database;
 using CSM.Infrastructure.Interceptors;
 using CSM.Infrastructure.Repositories;
+using CSM.Infrastructure.Seeds;
 using CSM.UseCases.Abstractions.Application;
 using CSM.UseCases.Abstractions.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -27,6 +30,7 @@ public static class DependencyInjection
             .AddDatabase(configuration)
             .AddRepositories()
             .AddInterceptors()
+            .AddMigrationService()
             .AddAuthenticationInternal(configuration)
             .AddAuthorizationInternal();
     
@@ -86,6 +90,8 @@ public static class DependencyInjection
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services
+            .AddScoped<IViewRepository, ViewRepository>()
+            .AddScoped<IRoleRepository, RoleRepository>()
             .AddScoped<IErrorMessageRepository, ErrorMessageRepository>()
             .AddScoped<IChannelRepository, ChannelRepository>()
             .AddScoped<ICountryRepository, CountryRepository>()
@@ -98,6 +104,15 @@ public static class DependencyInjection
     {
         services
             .AddSingleton<UpdateAuditableInterceptor>();
+
+        return services;
+    }
+    
+    private static IServiceCollection AddMigrationService(this IServiceCollection services)
+    {
+        services
+            .AddScoped<SeedRoleData>()
+            .AddScoped<SeedViewData>();
 
         return services;
     }

@@ -9,6 +9,8 @@ public sealed class Role : IAggregateRoot
 
     public string Name { get; private set; } = null!;
     
+    public string Code { get; private set; } = null!;
+    
     public string? Description { get; private set; }
     
     /// <summary>
@@ -27,11 +29,12 @@ public sealed class Role : IAggregateRoot
         
     }
     
-    public static Role CreateRole(string name, string description)
+    public static Role CreateRole(string name, string code, string description)
     {
         return new Role
         {
             Name = name,
+            Code = code,
             Description = description
         };
     }

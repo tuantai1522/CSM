@@ -47,6 +47,29 @@ public sealed class View : IAggregateRoot
         
     }
 
+    public static View CreateView(string name, ViewPermission viewPermission, int sortOrder, string? url)
+    {
+        return new View
+        {
+            Name = name,
+            ViewPermission = viewPermission,
+            SortOrder = sortOrder,
+            Url = url
+        };
+    }
+
+    public void AddViewChildren(string name, ViewPermission viewPermission, int sortOrder, string? url)
+    {
+        _views.Add(new View
+        {
+            Name = name,
+            ViewPermission = viewPermission,
+            SortOrder = sortOrder,
+            Url = url,
+            ParentViewId = Id
+        });
+    }
+
     public void AddViewPermissionForRole(Guid roleId, int permissionValue)
     {
         _rolePermissions.Add(RolePermission.CreateRolePermission(Id, roleId, permissionValue));
