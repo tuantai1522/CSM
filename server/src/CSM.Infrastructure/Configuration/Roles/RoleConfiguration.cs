@@ -21,10 +21,5 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.HasMany(r => r.UserRoles)
             .WithOne(x => x.Role)
             .HasForeignKey(p => p.RoleId);
-        
-        // Seed data
-        builder
-            .HasData(Role.CreateRole("Administrator", "R001", "To manage system"));
-
     }
 }
