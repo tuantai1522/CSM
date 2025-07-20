@@ -29,34 +29,34 @@ public class SeedViewData(IViewRepository viewRepository, ILogger<SeedViewData> 
             // View for admin 
             
             // Main view
-            var adminDashboard = View.CreateView("Admin dashboard", ViewPermission.Dashboard, 1, "/admin");
+            var adminDashboard = View.CreateView("Admin dashboard", ViewCode.Dashboard, 1, "/admin");
             
             // Children view
-            adminDashboard.AddViewChildren("User Management", ViewPermission.UserManagement, 2, "/admin/user-management");
-            adminDashboard.AddViewChildren("Role Management", ViewPermission.RoleManagement, 3, "/admin/role-management");
-            adminDashboard.AddViewChildren("Product Management", ViewPermission.ProductManagement, 4, "/admin/product-management");
-            adminDashboard.AddViewChildren("ExecutedEvent Management", ViewPermission.ExecutedEventManagement, 5, "/admin/executed-event-management");
+            adminDashboard.AddViewChildren("User Management", ViewCode.UserManagement, 2, "/admin/user-management");
+            adminDashboard.AddViewChildren("Role Management", ViewCode.RoleManagement, 3, "/admin/role-management");
+            adminDashboard.AddViewChildren("Product Management", ViewCode.ProductManagement, 4, "/admin/product-management");
+            adminDashboard.AddViewChildren("ExecutedEvent Management", ViewCode.ExecutedEventManagement, 5, "/admin/executed-event-management");
             
             // View for document 
             
             // Main view
-            var document = View.CreateView("Document", ViewPermission.Document, 6, "/document");
+            var document = View.CreateView("Document", ViewCode.Document, 6, "/document");
             
             // Children view
-            document.AddViewChildren("Categories Document", ViewPermission.CategoriesDocument, 7, "/document/categories");
-            document.AddViewChildren("Finance Document", ViewPermission.FinanceDocument, 8, "/document/finance");
-            document.AddViewChildren("Product Management", ViewPermission.ProductManagement, 9, "/admin/product-management");
-            document.AddViewChildren("Inventory Document", ViewPermission.InventoryDocument, 10, "/document/inventory");
+            document.AddViewChildren("Categories Document", ViewCode.CategoriesDocument, 7, "/document/categories");
+            document.AddViewChildren("Finance Document", ViewCode.FinanceDocument, 8, "/document/finance");
+            document.AddViewChildren("Product Management", ViewCode.ProductManagement, 9, "/admin/product-management");
+            document.AddViewChildren("Inventory Document", ViewCode.InventoryDocument, 10, "/document/inventory");
             
             // View for report 
             
             // Main view
-            var report = View.CreateView("Report", ViewPermission.Report, 10, "/report");
+            var report = View.CreateView("Report", ViewCode.Report, 10, "/report");
             
             // Children view
-            report.AddViewChildren("Meeting Report", ViewPermission.MeetingReport, 11, "/report/meeting");
-            report.AddViewChildren("Analytics Report", ViewPermission.AnalyticsReport, 12, "/report/analytics");
-            report.AddViewChildren("History Report", ViewPermission.HistoryReport, 13, "/report/history");
+            report.AddViewChildren("Meeting Report", ViewCode.MeetingReport, 11, "/report/meeting");
+            report.AddViewChildren("Analytics Report", ViewCode.AnalyticsReport, 12, "/report/analytics");
+            report.AddViewChildren("History Report", ViewCode.HistoryReport, 13, "/report/history");
             
             await viewRepository.AddViewsAsync([adminDashboard, document, report], CancellationToken.None);
             await viewRepository.UnitOfWork.SaveEntitiesAsync(CancellationToken.None);

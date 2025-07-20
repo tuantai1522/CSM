@@ -1,4 +1,6 @@
 using CSM.Core.Common;
+using CSM.Core.Features.ErrorMessages;
+
 namespace CSM.Core.Features.Views;
 
 public sealed class View : IAggregateRoot
@@ -8,9 +10,9 @@ public sealed class View : IAggregateRoot
     public string Name { get; private set; } = null!;
     
     /// <summary>
-    /// Key of current view
+    /// Code of current view
     /// </summary>
-    public ViewPermission ViewPermission { get; private set; }
+    public ViewCode ViewCode { get; private set; }
     
     public int SortOrder { get; private set; }
     
@@ -47,36 +49,60 @@ public sealed class View : IAggregateRoot
         
     }
 
-    public static View CreateView(string name, ViewPermission viewPermission, int sortOrder, string? url)
+    public static View CreateView(string name, ViewCode viewCode, int sortOrder, string? url)
     {
         return new View
         {
             Name = name,
-            ViewPermission = viewPermission,
+            ViewCode = viewCode,
             SortOrder = sortOrder,
             Url = url
         };
     }
 
-    public void AddViewChildren(string name, ViewPermission viewPermission, int sortOrder, string? url)
+    public void AddViewChildren(string name, ViewCode viewCode, int sortOrder, string? url)
     {
         _views.Add(new View
         {
             Name = name,
-            ViewPermission = viewPermission,
+            ViewCode = viewCode,
             SortOrder = sortOrder,
             Url = url,
             ParentViewId = Id
         });
     }
 
-    public void AddViewPermissionForRole(Guid roleId, int permissionValue)
+    public Result AddViewPermissionsForRole(Guid roleId, int permissionValue)
     {
-        _rolePermissions.Add(RolePermission.CreateRolePermission(Id, roleId, permissionValue));
+        if (ParentViewId == null)
+        {
+            return Result.Failure(Error.DomainError(ErrorCode.CanNotAssignToParentView.ToString(), ErrorType.Validation));
+        }
+        
+        var existingRolePermission = _rolePermissions
+            .FirstOrDefault(rp => rp.RoleId == roleId);
+        
+        // Update new role permission value
+        if (existingRolePermission is not null)
+        {
+            existingRolePermission.UpdatePermissionValue(permissionValue);
+        }
+        else
+        {
+            _rolePermissions.Add(RolePermission.CreateRolePermission(Id, roleId, permissionValue));
+        }
+        return Result.Success();
     }
     
-    public void AddViewPermissionForUser(Guid userId, int permissionValue)
+    public Result AddViewPermissionsForUser(Guid userId, int permissionValue)
     {
+        if (ParentViewId == null)
+        {
+            return Result.Failure(Error.DomainError(ErrorCode.CanNotAssignToParentView.ToString(), ErrorType.Validation));
+        }
+        
         _userPermissions.Add(UserPermission.CreateUserPermission(Id, userId, permissionValue));
+        
+        return Result.Success();
     }
 }

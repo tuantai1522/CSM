@@ -278,15 +278,6 @@ namespace CSM.Infrastructure.Migrations
                         .HasDatabaseName("ix_roles_code");
 
                     b.ToTable("roles", "csm");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("01982322-4302-7f89-8b24-32c5e2c0b5ff"),
-                            Code = "R001",
-                            Description = "To manage system",
-                            Name = "Administrator"
-                        });
                 });
 
             modelBuilder.Entity("CSM.Core.Features.Roles.UserRole", b =>
@@ -465,9 +456,9 @@ namespace CSM.Infrastructure.Migrations
                         .HasColumnType("character varying(256)")
                         .HasColumnName("url");
 
-                    b.Property<int>("ViewPermission")
+                    b.Property<int>("ViewCode")
                         .HasColumnType("integer")
-                        .HasColumnName("view_permission");
+                        .HasColumnName("view_code");
 
                     b.HasKey("Id")
                         .HasName("pk_views");

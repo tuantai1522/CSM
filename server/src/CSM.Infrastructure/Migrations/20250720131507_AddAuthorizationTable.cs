@@ -19,6 +19,7 @@ namespace CSM.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    code = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
@@ -124,6 +125,13 @@ namespace CSM.Infrastructure.Migrations
                 schema: "csm",
                 table: "role_permissions",
                 column: "view_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_roles_code",
+                schema: "csm",
+                table: "roles",
+                column: "code",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_user_permissions_view_id",

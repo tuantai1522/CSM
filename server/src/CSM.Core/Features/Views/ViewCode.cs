@@ -1,6 +1,6 @@
 namespace CSM.Core.Features.Views;
 
-public enum ViewPermission
+public enum ViewCode
 {
     /// <summary>
     /// Admin dashboard
