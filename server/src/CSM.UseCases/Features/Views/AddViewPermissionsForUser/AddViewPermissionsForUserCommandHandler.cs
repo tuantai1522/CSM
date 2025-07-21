@@ -1,22 +1,23 @@
 ﻿using CSM.Core.Common;
 using CSM.Core.Features.ErrorMessages;
-using CSM.Core.Features.Roles;
+using CSM.Core.Features.Users;
 using CSM.Core.Features.Views;
 using CSM.UseCases.Abstractions.Authentication;
 using MediatR;
 
-namespace CSM.UseCases.Features.Views.AddViewPermissionsForRole;
+namespace CSM.UseCases.Features.Views.AddViewPermissionsForUser;
 
 internal sealed class AddViewPermissionsForRoleCommandHandler(
     IUserProvider userProvider,
     IBinaryConversion binaryConversion,
-    IRoleRepository roleRepository,
-    IViewRepository viewRepository): IRequestHandler<AddViewPermissionsForRoleCommand, Result<Guid>>
+    IUserRepository userRepository,
+    IViewRepository viewRepository): IRequestHandler<AddViewPermissionsForUserCommand, Result<Guid>>
 {
-    public async Task<Result<Guid>> Handle(AddViewPermissionsForRoleCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(AddViewPermissionsForUserCommand command, CancellationToken cancellationToken)
     {
-        var existedRole = await roleRepository.VerifyExistedRoleIdAsync(command.RoleId, cancellationToken);
-        if (!existedRole)
+        var existedUser = await userRepository.VerifyExistedUserIdAsync(command.UserId, cancellationToken);
+        
+        if (!existedUser)
         {
             return Result.Failure<Guid>(await userProvider.Error(ErrorCode.NotFoundById.ToString(), ErrorType.NotFound));
         }
@@ -28,13 +29,13 @@ internal sealed class AddViewPermissionsForRoleCommandHandler(
             cancellationToken,
             
             // Include role permissions
-            x => x.RolePermissions.Where(ch => ch.RoleId == command.RoleId));
+            x => x.UserPermissions.Where(ch => ch.UserId == command.UserId));
 
         foreach (var viewPermission in command.ViewPermissions)
         {
             var view = views.FirstOrDefault(x => x.Id == viewPermission.ViewId);
 
-            var result = view?.AddViewPermissionsForRole(command.RoleId, binaryConversion.BinaryToDecimal(viewPermission.PermissionValue));
+            var result = view?.AddViewPermissionsForUser(command.UserId, binaryConversion.BinaryToDecimal(viewPermission.PermissionValue));
             if (result is { IsFailure: true })
             {
                 return Result.Failure<Guid>(await userProvider.Error(result.Error.Code, result.Error.Type));
@@ -43,6 +44,6 @@ internal sealed class AddViewPermissionsForRoleCommandHandler(
         
         await viewRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
-        return Result.Success(command.RoleId);
+        return Result.Success(command.UserId);
     }
 }

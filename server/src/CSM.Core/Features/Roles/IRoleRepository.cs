@@ -8,4 +8,5 @@ public interface IRoleRepository : IRepository<Role>
     Task AddRolesAsync(IReadOnlyList<Role> roles, CancellationToken cancellationToken);
     
     Task<bool> VerifyExistedRoleDataAsync(CancellationToken cancellationToken);
+    Task<bool> VerifyExistedRoleIdAsync(Guid roleId, CancellationToken cancellationToken);
 }

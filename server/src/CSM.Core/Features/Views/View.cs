@@ -101,7 +101,18 @@ public sealed class View : IAggregateRoot
             return Result.Failure(Error.DomainError(ErrorCode.CanNotAssignToParentView.ToString(), ErrorType.Validation));
         }
         
-        _userPermissions.Add(UserPermission.CreateUserPermission(Id, userId, permissionValue));
+        var existingUserPermission = _userPermissions
+            .FirstOrDefault(rp => rp.UserId == userId);
+        
+        // Update new user permission value
+        if (existingUserPermission is not null)
+        {
+            existingUserPermission.UpdatePermissionValue(permissionValue);
+        }
+        else
+        {
+            _userPermissions.Add(UserPermission.CreateUserPermission(Id, userId, permissionValue));
+        }
         
         return Result.Success();
     }

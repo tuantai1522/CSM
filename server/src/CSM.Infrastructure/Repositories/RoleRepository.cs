@@ -27,4 +27,8 @@ public sealed class RoleRepository(ApplicationDbContext context) : IRoleReposito
 
     public async Task<bool> VerifyExistedRoleDataAsync(CancellationToken cancellationToken)
         => await _context.Roles.AnyAsync(cancellationToken);
+
+    public async Task<bool> VerifyExistedRoleIdAsync(Guid roleId, CancellationToken cancellationToken)
+        => await _context.Roles.AnyAsync(x => x.Id == roleId, cancellationToken);
+
 }

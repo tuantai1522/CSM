@@ -9,4 +9,5 @@ public interface IUserRepository : IRepository<User>
     Task<User> AddUserAsync(User user, CancellationToken cancellationToken);
     
     Task<bool> VerifyExistedEmailAsync(string email, CancellationToken cancellationToken);
+    Task<bool> VerifyExistedUserIdAsync(Guid userId, CancellationToken cancellationToken);
 }

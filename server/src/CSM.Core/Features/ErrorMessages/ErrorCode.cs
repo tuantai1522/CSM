@@ -33,4 +33,5 @@ public enum ErrorCode
     InvalidPermissionsValue = 1026,
     CanNotAssignToParentView = 1027,
     ListViewEmpty = 1028,
+    UserIdEmpty = 1029,
 }
