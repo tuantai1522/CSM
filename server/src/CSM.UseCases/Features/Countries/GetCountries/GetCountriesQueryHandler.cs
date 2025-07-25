@@ -1,5 +1,6 @@
 using CSM.Core.Common;
 using CSM.Core.Features.Countries;
+using CSM.UseCases.Mappers.Countries;
 using MediatR;
 
 namespace CSM.UseCases.Features.Countries.GetCountries;
