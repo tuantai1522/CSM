@@ -25,5 +25,9 @@ public enum ViewCode
     Report = 9,
     MeetingReport = 10,
     AnalyticsReport = 11,
-    HistoryReport = 12
+    HistoryReport = 12,
+    
+    MeetingPaperReport = 13,
+    MeetingGraphReport = 14,
+    MeetingMailReport = 15,
 }

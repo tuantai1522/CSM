@@ -49,15 +49,20 @@ public sealed class View : IAggregateRoot
         
     }
 
-    public static View CreateView(string name, ViewCode viewCode, int sortOrder, string? url)
+    public static View CreateView(string name, ViewCode viewCode, int sortOrder, string? url, List<View> views)
     {
-        return new View
+        var newView = new View
         {
             Name = name,
             ViewCode = viewCode,
             SortOrder = sortOrder,
-            Url = url
+            Url = url,
         };
+        
+        // Add children view
+        newView._views.AddRange(views);
+        
+        return newView;
     }
 
     public void AddViewChildren(string name, ViewCode viewCode, int sortOrder, string? url)
