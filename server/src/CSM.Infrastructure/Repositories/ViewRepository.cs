@@ -40,4 +40,18 @@ public sealed class ViewRepository(ApplicationDbContext context) : IViewReposito
         
         return await query.ToListAsync(cancellationToken);
     }
+    public async Task<IReadOnlyList<View>> GetViewsAsync(CancellationToken cancellationToken)
+    {
+        var views = await _context.Views
+            .OrderBy(x => x.SortOrder)           
+            .Include(x => x.Views.OrderBy(view => view.SortOrder))               
+            .ToListAsync(cancellationToken);
+        
+        // Only filter parent view
+        views = views
+            .Where(x => x.ParentViewId == null)
+            .ToList();
+
+        return views;
+    }
 }

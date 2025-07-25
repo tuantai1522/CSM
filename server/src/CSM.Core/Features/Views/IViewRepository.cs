@@ -10,4 +10,5 @@ public interface IViewRepository : IRepository<View>
     
     Task<bool> VerifyExistedViewDataAsync(CancellationToken cancellationToken);
     Task<IReadOnlyList<View>> GetViewsByIdsAsync(IReadOnlyList<int> viewIds, CancellationToken cancellationToken, params Expression<Func<View, object>>[]? includeProperties);
+    Task<IReadOnlyList<View>> GetViewsAsync(CancellationToken cancellationToken);
 }
