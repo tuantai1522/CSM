@@ -40,6 +40,20 @@ public sealed class ViewRepository(ApplicationDbContext context) : IViewReposito
         
         return await query.ToListAsync(cancellationToken);
     }
+
+    public async Task<IReadOnlyList<UserPermission>> GetUserPermissionsByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+        => await _context.Views
+            .Where(view => view.UserPermissions.Any(userPermission => userPermission.UserId == userId))
+            .SelectMany(x => x.UserPermissions)
+            .ToListAsync(cancellationToken);
+
+    public async Task<IReadOnlyList<RolePermission>> GetRolePermissionsByRoleIdsAsync(IReadOnlyList<Guid> roleIds, CancellationToken cancellationToken)
+        => await _context.Views
+            .Where(view => view.RolePermissions.Any(rolePermission => roleIds.Contains(rolePermission.RoleId)))
+            .SelectMany(x => x.RolePermissions)
+            .Where(rolePermission => roleIds.Contains(rolePermission.RoleId))
+            .ToListAsync(cancellationToken);
+    
     public async Task<IReadOnlyList<View>> GetViewsAsync(CancellationToken cancellationToken)
     {
         var views = await _context.Views

@@ -31,4 +31,7 @@ public sealed class RoleRepository(ApplicationDbContext context) : IRoleReposito
     public async Task<bool> VerifyExistedRoleIdAsync(Guid roleId, CancellationToken cancellationToken)
         => await _context.Roles.AnyAsync(x => x.Id == roleId, cancellationToken);
 
+    public async Task<List<Role>> GetRolesByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+        => await _context.Roles.Where(role => role.UserRoles.Any(userRole => userRole.UserId == userId)).ToListAsync(cancellationToken);
+
 }
