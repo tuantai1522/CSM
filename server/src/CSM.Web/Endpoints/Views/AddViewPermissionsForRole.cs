@@ -27,6 +27,8 @@ internal sealed class AddViewPermissionsForRole : IEndpoint
 
                 return result.Match(Results.Ok, CustomResults.Problem);
             })
-            .WithTags(Tags.Views);
+            .WithTags(Tags.Views)
+            .RequireAuthorization();
+
     }
 }
