@@ -5,9 +5,18 @@ namespace CSM.UseCases.Mappers.Views;
 
 public static class DomainToDtoMapper
 {
-    public static ViewDto ToViewDto(this View view) 
-        => new(view.Id, view.Name, view.Url, view.Views.Select(viewDto => viewDto.ToViewDto()).ToList());
-    
+    public static ViewDto ToViewDto(this View view)
+    {
+        // Convert the combined permission values to a binary string
+        int actionLength = Enum.GetValues<ActionType>().Length;
+
+        var viewDto = new ViewDto(view.Id, view.Name, view.Url,
+            Convert.ToString(view.PermissionValue, 2).PadLeft(actionLength, '0'),
+            view.Views.Select(viewDto => viewDto.ToViewDto()).ToList());
+
+        return viewDto;
+    }
+
     public static ViewUserDto ToViewUserDto(this View view, IReadOnlyList<UserPermission> userPermissions, IReadOnlyList<RolePermission> rolePermissions)
     {
         // Get user and role permissions for this view
