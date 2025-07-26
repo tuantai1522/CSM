@@ -24,26 +24,26 @@ public class SeedViewData(IViewRepository viewRepository, IRoleRepository roleRe
     private async Task TrySeedViewDataAsync()
     {
         // View for admin 
-        var userManagement = View.CreateView("User Management", ViewCode.UserManagement, 2, "/admin/user-management", []);
-        var roleManagement = View.CreateView("Role Management", ViewCode.RoleManagement, 3, "/admin/role-management", []);
-        var productManagement = View.CreateView("Product Management", ViewCode.ProductManagement, 4, "/admin/product-management", []);
-        var executedEventManagement = View.CreateView("ExecutedEvent Management", ViewCode.ExecutedEventManagement, 5, "/admin/executed-event-management", []);
+        var userManagement = View.CreateView("User Management", ViewCode.UserManagement, 2, "/admin/user-management", 63, []);
+        var roleManagement = View.CreateView("Role Management", ViewCode.RoleManagement, 3, "/admin/role-management", 63, []);
+        var productManagement = View.CreateView("Product Management", ViewCode.ProductManagement, 4, "/admin/product-management", 63, []);
+        var executedEventManagement = View.CreateView("ExecutedEvent Management", ViewCode.ExecutedEventManagement, 5, "/admin/executed-event-management", 63, []);
         
-        var adminDashboard = View.CreateView("Admin dashboard", ViewCode.Dashboard, 1, "/admin",
+        var adminDashboard = View.CreateView("Admin dashboard", ViewCode.Dashboard, 1, "/admin", 0,
         [
             userManagement,
             roleManagement,
             productManagement,
-            productManagement,
+            executedEventManagement,
         ]);
         
         // View for document 
-        var categoriesDocument = View.CreateView("Categories Document", ViewCode.CategoriesDocument, 7, "/document/categories", []);
-        var financeDocument = View.CreateView("Finance Document", ViewCode.FinanceDocument, 8, "/document/finance", []);
-        var inventoryDocument = View.CreateView("Inventory Document", ViewCode.InventoryDocument, 9, "/document/inventory", []);
+        var categoriesDocument = View.CreateView("Categories Document", ViewCode.CategoriesDocument, 7, "/document/categories", 60, []);
+        var financeDocument = View.CreateView("Finance Document", ViewCode.FinanceDocument, 8, "/document/finance", 60, []);
+        var inventoryDocument = View.CreateView("Inventory Document", ViewCode.InventoryDocument, 9, "/document/inventory", 60, []);
 
         
-        var document = View.CreateView("Document", ViewCode.Document, 6, "/document",
+        var document = View.CreateView("Document", ViewCode.Document, 6, "/document", 0,
         [
             categoriesDocument,
             financeDocument,
@@ -51,21 +51,21 @@ public class SeedViewData(IViewRepository viewRepository, IRoleRepository roleRe
         ]);
 
         // View for report 
-        var meetingPaperReport = View.CreateView("Meeting paper report", ViewCode.MeetingPaperReport, 12, "/report/meeting/paper", []);
-        var meetingGraphReport = View.CreateView("Meeting graph report", ViewCode.MeetingGraphReport, 13, "/report/meeting/graph", []);
-        var meetingMailReport = View.CreateView("Meeting mail report", ViewCode.MeetingMailReport, 14, "/report/meeting/mail", []);
+        var meetingPaperReport = View.CreateView("Meeting paper report", ViewCode.MeetingPaperReport, 12, "/report/meeting/paper", 55, []);
+        var meetingGraphReport = View.CreateView("Meeting graph report", ViewCode.MeetingGraphReport, 13, "/report/meeting/graph", 55, []);
+        var meetingMailReport = View.CreateView("Meeting mail report", ViewCode.MeetingMailReport, 14, "/report/meeting/mail", 55, []);
         
-        var meetingReport = View.CreateView("Meeting Report", ViewCode.MeetingReport, 11, "/report/meeting", 
+        var meetingReport = View.CreateView("Meeting Report", ViewCode.MeetingReport, 11, "/report/meeting", 0,
         [
             meetingPaperReport,
             meetingGraphReport,
             meetingMailReport
         ]);
         
-        var analyticsReport = View.CreateView("Analytics Report", ViewCode.AnalyticsReport, 15, "/report/analytics", []);
-        var historyReport = View.CreateView("History Report", ViewCode.HistoryReport, 16, "/report/history", []);
+        var analyticsReport = View.CreateView("Analytics Report", ViewCode.AnalyticsReport, 15, "/report/analytics", 35, []);
+        var historyReport = View.CreateView("History Report", ViewCode.HistoryReport, 16, "/report/history", 35, []);
         
-        var report = View.CreateView("Report", ViewCode.Report, 10, "/report",
+        var report = View.CreateView("Report", ViewCode.Report, 10, "/report", 0,
         [
             meetingReport,
             analyticsReport,

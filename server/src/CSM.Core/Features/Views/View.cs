@@ -19,6 +19,11 @@ public sealed class View : IAggregateRoot
     public int? ParentViewId { get; private init; }
     
     public string? Url { get; set; }
+    
+    /// <summary>
+    /// Define action can be worked on this View
+    /// </summary>
+    public int PermissionValue { get; set; }
 
     /// <summary>
     /// List view children
@@ -49,7 +54,7 @@ public sealed class View : IAggregateRoot
         
     }
 
-    public static View CreateView(string name, ViewCode viewCode, int sortOrder, string? url, List<View> views)
+    public static View CreateView(string name, ViewCode viewCode, int sortOrder, string? url, int permissionValue, List<View> views)
     {
         var newView = new View
         {
@@ -57,6 +62,7 @@ public sealed class View : IAggregateRoot
             ViewCode = viewCode,
             SortOrder = sortOrder,
             Url = url,
+            PermissionValue = permissionValue,
         };
         
         // Add children view
@@ -65,7 +71,7 @@ public sealed class View : IAggregateRoot
         return newView;
     }
 
-    public void AddViewChildren(string name, ViewCode viewCode, int sortOrder, string? url)
+    public void AddViewChildren(string name, ViewCode viewCode, int sortOrder, string? url, int permissionValue)
     {
         _views.Add(new View
         {
@@ -73,7 +79,8 @@ public sealed class View : IAggregateRoot
             ViewCode = viewCode,
             SortOrder = sortOrder,
             Url = url,
-            ParentViewId = Id
+            ParentViewId = Id,
+            PermissionValue = permissionValue
         });
     }
 
