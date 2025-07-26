@@ -112,7 +112,6 @@ public static class DependencyInjection
     private static IServiceCollection AddMigrationService(this IServiceCollection services)
     {
         services
-            .AddScoped<SeedRoleData>()
             .AddScoped<SeedViewData>();
 
         return services;

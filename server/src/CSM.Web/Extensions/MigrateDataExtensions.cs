@@ -8,8 +8,7 @@ internal static class MigrateDataExtensions
     {
         // To await every single Task run parallel
         await Task.WhenAll(
-            app.SeedViewDataAsync(),
-            app.SeedRoleDataAsync()
+            app.SeedViewDataAsync()
         );
     }
 }
