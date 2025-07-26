@@ -56,7 +56,6 @@ public static class DependencyInjection
 
         services.AddHttpContextAccessor();
         
-        services.AddScoped<IBinaryConversion, BinaryConversion>();
         services.AddScoped<IUserProvider, UserProvider>();
         services.AddScoped<ITransformer, Transformer>();
         

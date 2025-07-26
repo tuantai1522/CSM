@@ -9,7 +9,6 @@ namespace CSM.UseCases.Features.Views.AddViewPermissionsForUser;
 
 internal sealed class AddViewPermissionsForRoleCommandHandler(
     IUserProvider userProvider,
-    IBinaryConversion binaryConversion,
     IUserRepository userRepository,
     IViewRepository viewRepository): IRequestHandler<AddViewPermissionsForUserCommand, Result<Guid>>
 {
@@ -35,7 +34,7 @@ internal sealed class AddViewPermissionsForRoleCommandHandler(
         {
             var view = views.FirstOrDefault(x => x.Id == viewPermission.ViewId);
 
-            var result = view?.AddViewPermissionsForUser(command.UserId, binaryConversion.BinaryToDecimal(viewPermission.PermissionValue));
+            var result = view?.AddViewPermissionsForUser(command.UserId, Convert.ToInt32(viewPermission.PermissionValue, 2));
             if (result is { IsFailure: true })
             {
                 return Result.Failure<Guid>(await userProvider.Error(result.Error.Code, result.Error.Type));
