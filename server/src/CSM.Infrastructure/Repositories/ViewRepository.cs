@@ -43,17 +43,32 @@ public sealed class ViewRepository(ApplicationDbContext context) : IViewReposito
 
     public async Task<IReadOnlyList<UserPermission>> GetUserPermissionsByUserIdAsync(Guid userId, CancellationToken cancellationToken)
         => await _context.Views
-            .Where(view => view.UserPermissions.Any(userPermission => userPermission.UserId == userId))
             .SelectMany(x => x.UserPermissions)
+            .Where(userPermission => userPermission.UserId == userId)
             .ToListAsync(cancellationToken);
 
     public async Task<IReadOnlyList<RolePermission>> GetRolePermissionsByRoleIdsAsync(IReadOnlyList<Guid> roleIds, CancellationToken cancellationToken)
         => await _context.Views
-            .Where(view => view.RolePermissions.Any(rolePermission => roleIds.Contains(rolePermission.RoleId)))
             .SelectMany(x => x.RolePermissions)
             .Where(rolePermission => roleIds.Contains(rolePermission.RoleId))
             .ToListAsync(cancellationToken);
-    
+
+    public async Task<View?> GetViewByViewCodeAsync(ViewCode viewCode, CancellationToken cancellationToken)
+        => await _context.Views
+            .FirstOrDefaultAsync(x => x.ViewCode == viewCode, cancellationToken);
+
+    public async Task<IReadOnlyList<UserPermission>> GetUserPermissionsByUserIdAndViewIdAsync(Guid userId, int viewId, CancellationToken cancellationToken)
+        => await _context.Views
+            .SelectMany(x => x.UserPermissions)
+            .Where(userPermission => userPermission.UserId == userId && userPermission.ViewId == viewId)
+            .ToListAsync(cancellationToken);
+
+    public async Task<IReadOnlyList<RolePermission>> GetRolePermissionsByRoleIdsAndViewIdAsync(IReadOnlyList<Guid> roleIds, int viewId, CancellationToken cancellationToken)
+        => await _context.Views
+            .SelectMany(x => x.RolePermissions)
+            .Where(rolePermission => roleIds.Contains(rolePermission.RoleId) && rolePermission.ViewId == viewId)
+            .ToListAsync(cancellationToken);
+
     public async Task<IReadOnlyList<View>> GetViewsAsync(CancellationToken cancellationToken)
     {
         var views = await _context.Views
