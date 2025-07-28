@@ -29,4 +29,9 @@ public enum ErrorCode
     PageSizeMustBePositive = 1023,
     
     ThisUserAlreadyBelongsToThisRole = 1024,
+    RoleIdEmpty = 1025,
+    InvalidPermissionsValue = 1026,
+    CanNotAssignToParentView = 1027,
+    ListViewEmpty = 1028,
+    UserIdEmpty = 1029,
 }

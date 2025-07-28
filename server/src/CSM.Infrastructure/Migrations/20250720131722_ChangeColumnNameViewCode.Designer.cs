@@ -3,6 +3,7 @@ using System;
 using CSM.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CSM.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250720131722_ChangeColumnNameViewCode")]
+    partial class ChangeColumnNameViewCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -446,10 +449,6 @@ namespace CSM.Infrastructure.Migrations
                     b.Property<int?>("ParentViewId")
                         .HasColumnType("integer")
                         .HasColumnName("parent_view_id");
-
-                    b.Property<int>("PermissionValue")
-                        .HasColumnType("integer")
-                        .HasColumnName("permission_value");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")

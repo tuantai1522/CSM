@@ -2,7 +2,7 @@ using CSM.Core.Features.ErrorMessages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CSM.Infrastructure.Configuration;
+namespace CSM.Infrastructure.Configuration.ErrorMessages;
 
 public class ErrorMessageConfiguration : IEntityTypeConfiguration<ErrorMessage>
 {

@@ -1,6 +1,6 @@
 ﻿using CSM.Core.Common;
 using CSM.Core.Features.Channels;
-using CSM.UseCases.Mappers.Channels;
+using CSM.UseCases.Mappers.Users;
 using MediatR;
 
 namespace CSM.UseCases.Features.Channels.GetMembersByRoleAndChannelId;

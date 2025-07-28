@@ -23,6 +23,9 @@ app.MapEndpoints();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    // Seed data
+    await app.UseMigrationDataAsync();
+    
     app.UseSwaggerWithUi();
 }
 

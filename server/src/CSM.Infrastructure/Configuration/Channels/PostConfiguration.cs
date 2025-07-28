@@ -1,9 +1,8 @@
 using CSM.Core.Features.Channels;
-using CSM.Core.Features.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CSM.Infrastructure.Configuration;
+namespace CSM.Infrastructure.Configuration.Channels;
 
 public class PostConfiguration : IEntityTypeConfiguration<Post>
 {

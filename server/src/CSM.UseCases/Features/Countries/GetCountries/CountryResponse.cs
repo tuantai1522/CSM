@@ -1,8 +1,3 @@
 namespace CSM.UseCases.Features.Countries.GetCountries;
 
-public sealed class CountryResponse
-{
-    public Guid Id { get; set; }
-
-    public string Name { get; set; } = null!;
-}
+public sealed record CountryResponse(Guid Id, string Name);

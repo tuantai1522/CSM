@@ -30,4 +30,8 @@ public sealed class UserRepository(ApplicationDbContext context) : IUserReposito
         return await _context.Users
             .AnyAsync(x => x.Email == email, cancellationToken);
     }
+
+    public async Task<bool> VerifyExistedUserIdAsync(Guid userId, CancellationToken cancellationToken)
+        => await _context.Users
+            .AnyAsync(x => x.Id == userId, cancellationToken);
 }
