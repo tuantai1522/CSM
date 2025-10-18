@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { DrizzleService } from './drizzle/drizzle.service';
 
 @Module({
