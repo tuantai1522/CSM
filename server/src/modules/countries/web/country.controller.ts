@@ -6,10 +6,10 @@ import {
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { CreateCountryUseCase } from '../useCase/features/createCountry/create-country.usecase';
-import { CreateCountryRequest } from '../useCase/features/createCountry/create-country.dto';
-import { GetCountriesUseCase } from '../useCase/features/getCountries/get-countries.usecase';
-import { GetCountryByIdUsecase } from '../useCase/features/getCountryById/get-country-by-id.usecase';
+import { CreateCountryRequest } from '../useCase/features/commands/createCountry/create-country.dto';
+import { CreateCountryUseCase } from '../useCase/features/commands/createCountry/create-country.usecase';
+import { GetCountriesUseCase } from '../useCase/features/queries/getCountries/get-countries.usecase';
+import { GetCountryByIdUsecase } from '../useCase/features/queries/getCountryById/get-country-by-id.usecase';
 
 @Controller('countries')
 export class CountryController {

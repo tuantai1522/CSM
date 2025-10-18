@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { COUNTRY_REPOSITORY } from '../../../infrastructure/country.di-tokens';
-import type { ICountryRepository } from '../../../core/country.repository.interface';
+import { CountryEntity } from 'src/modules/countries/core/country.entity';
+import type { ICountryRepository } from 'src/modules/countries/core/country.repository.interface';
+import { COUNTRY_REPOSITORY } from 'src/modules/countries/infrastructure/country.di-tokens';
 import { CreateCountryRequest } from './create-country.dto';
-import { CountryEntity } from '../../../core/country.entity';
 
 @Injectable()
 export class CreateCountryUseCase {

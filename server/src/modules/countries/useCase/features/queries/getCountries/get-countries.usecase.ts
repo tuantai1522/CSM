@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { COUNTRY_REPOSITORY } from '../../../infrastructure/country.di-tokens';
-import type { ICountryRepository } from '../../../core/country.repository.interface';
-import { CountryResponseDto } from '../../dtos/country.response.dto';
-import { CountryMapper } from '../../mappers/country.mapper';
+import { COUNTRY_REPOSITORY } from 'src/modules/countries/infrastructure/country.di-tokens';
+import { CountryResponseDto } from '../../../dtos/country.response.dto';
+import { CountryMapper } from '../../../mappers/country.mapper';
+import type { ICountryRepository } from '../../../../core/country.repository.interface';
 
 @Injectable()
 export class GetCountriesUseCase {
